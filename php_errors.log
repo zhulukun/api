@@ -1,0 +1,8 @@
+[05-Nov-2015 11:07:05 Asia/Chongqing] PHP Fatal error:  Call to undefined function base_url() in /var/www/html/youli2.0/application/views/welcome_message.php on line 8
+[05-Nov-2015 11:08:02 Asia/Chongqing] PHP Fatal error:  Call to undefined function base_url() in /var/www/html/youli2.0/application/views/welcome_message.php on line 8
+[05-Nov-2015 11:08:04 Asia/Chongqing] PHP Fatal error:  Call to undefined function base_url() in /var/www/html/youli2.0/application/views/welcome_message.php on line 8
+[05-Nov-2015 11:08:06 Asia/Chongqing] PHP Fatal error:  Call to undefined function base_url() in /var/www/html/youli2.0/application/views/welcome_message.php on line 8
+[05-Nov-2015 11:11:04 Asia/Chongqing] PHP Fatal error:  Call to undefined function base_url() in /var/www/html/youli2.0/application/views/welcome_message.php on line 8
+[05-Nov-2015 11:23:28 Asia/Chongqing] PHP Parse error:  syntax error, unexpected ')' in /var/www/html/youli2.0/application/models/User_model.php on line 56
+[05-Nov-2015 17:33:16 Asia/Chongqing] PHP Parse error:  syntax error, unexpected '=>' (T_DOUBLE_ARROW) in /var/www/html/youli2.0/application/controllers/User.php on line 44
+[05-Nov-2015 17:34:49 Asia/Chongqing] PHP Parse error:  syntax error, unexpected '=>' (T_DOUBLE_ARROW) in /var/www/html/youli2.0/application/controllers/User.php on line 44

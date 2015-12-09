@@ -1,0 +1,207 @@
+<?php
+
+    class FriendInfo_model extends CI_Model {  
+                              
+        function __construct()  
+        {  
+
+            parent::__construct();
+            $this->load->database(); 
+        
+        }
+
+        /**
+    	* add user's friends info into the database
+     	*
+     	* @param id account_id friends_info
+    	* @return bool
+     	*/
+
+        function add_friends($id,$account_id,$friend_info)
+        {
+        	$query=$this->db->query("INSERT INTO xl_friendinfo(id,account_id,friend_info) VALUES ('{$id}','{$account_id}','{$friend_info}')");
+
+        	if ($this->db->affected_rows()>0) 
+        	{
+        		return TRUE;
+        	}
+
+        	return FALSE;
+        }
+
+        /**
+        * add user's friends info into the database
+        *
+        * @param id account_id friends_info
+        * @return bool
+        */
+
+        function update_friends($account_id,$friends_info)
+        {
+            $query=$this->db->query("UPDATE xl_friendinfo SET friend_info='{$friends_info}' WHERE account_id='{$account_id}'");
+
+            if ($this->db->affected_rows()>0) 
+            {
+                return TRUE;
+            }
+
+            return FALSE;
+        }
+
+        /**
+        * get all friends info by account_id
+        *
+        * @param account_id
+        * @return jsonArray
+        */
+
+        function get_all_friends($account_id,$page,$page_size,$sort,$only_register)
+        {
+          
+            $query=$this->db->query("SELECT friend_info FROM xl_friendinfo WHERE account_id='{$account_id}'");
+            
+            $arr = array();
+
+            foreach($query->result_array() as $row)
+              {
+                    array_push($arr,$row);
+              }
+
+            $arr_friends=(array)json_decode($arr[0]['friend_info'],TRUE);
+            $total= count($arr_friends);
+            $users_info=array();
+
+            for ($i=($page-1)*$page_size; $i <count($arr_friends) && $i<($page-1)*$page_size+$page_size ; $i++) 
+            {   
+                $cellphone=$arr_friends[$i]['phone'];
+                $query=$this->db->query("select id from xl_account where cellphone='{$cellphone}'");
+                $arr = array();
+
+                foreach($query->result_array() as $row)
+                  {
+                        array_push($arr,$row);
+                  }     
+
+                $account_id=$arr[0]['id'];
+
+                $query_avg_score=$this->db->query("SELECT AVG(score) AS score FROM xl_score WHERE target_id='{$account_id}'");
+
+                $query_avatar_url=$this->db->query("SELECT avatar_url AS avatar_url FROM xl_avatar WHERE account_id='{$account_id}'");
+
+                $query_account_info=$this->db->query("SELECT id,nickname,cellphone,sex,birthday,horoscope,status,datetime,type FROM xl_account WHERE id='{$account_id}'");
+
+                  $arr = array();
+
+                  foreach($query_account_info->result_array() as $row)
+                  {
+                        array_push($arr,$row);
+                  }
+
+                 $user_info=$arr[0];
+
+
+                 if ($query_avg_score->num_rows()>0) {
+                    
+                    $arr_score = array();
+
+                    foreach($query_avg_score->result_array() as $row)
+                    {
+                          array_push($arr_score,$row);
+                    }
+
+                    $score=number_format($arr_score[0]['score'], 2, '.', '');
+                    $user_score=array('score' => $score );
+                 }
+                 else
+                 {
+                    $user_score=array('score' => '无', );
+                 }
+
+                 if ($query_avatar_url->num_rows()>0) 
+                 {
+                    $arr_avatar = array();
+
+                    foreach($query_avatar->result_array() as $row)
+                    {
+                          array_push($arr_score,$row);
+                    }
+
+                    $user_avatar=$arr_avatar[0];
+
+                 }
+                 else
+                 {
+                    $user_avatar=array('avatar_url' => '', );
+
+                 }
+
+                 $user_info=array_merge($user_info, $user_avatar);
+                 $user_info=array_merge($user_info,$user_score);
+
+                // print_r($user_info);
+
+                 $users_info[$i]=$user_info;
+            }
+
+            $callback=array();
+            $callback['status']='ok';
+            $callback['response']=array(
+                    "page" => $page,
+                    "page_size" => $page_size,
+                    "total" => $total,
+                    "friends" => json_encode($users_info)
+                );
+
+          return $callback;
+
+
+            
+        }
+
+        /**
+        * get  friends number by account_id
+        *
+        * @param account_id
+        * @return int
+        */
+
+        function get_friends_num($account_id)
+        {
+            $query=$this->db->query("SELECT friend_info FROM xl_friendinfo WHERE account_id='{$account_id}'");
+            
+            $arr = array();
+
+            foreach($query->result_array() as $row)
+              {
+                    array_push($arr,$row);
+              }
+
+            return count((array)json_decode($arr[0]['friend_info'],TRUE));
+        }
+
+
+       /**
+    	* judge the user's friends is added or not.
+     	*
+     	* @param account_id
+    	* @return bool
+     	*/
+
+        function is_friends_added($account_id)
+        {
+        	$query=$this->db->query("SELECT * FROM xl_friendinfo WHERE account_id='{$account_id}'");
+
+        	if ($query->num_rows()>0) 
+        	{
+        		return TRUE;
+        	}
+
+        	return FALSE;
+        }
+
+
+
+        
+    }
+
+?>
