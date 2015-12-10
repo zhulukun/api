@@ -21,6 +21,11 @@ class Message extends CI_Controller {
 		$this->load->view('welcome_message');
 	}
 
+	/**
+	 *
+	 *	发送短信接口
+	 *
+	 */
 	public function send_message()
 	{
 		$json=file_get_contents("php://input");
@@ -71,8 +76,9 @@ class Message extends CI_Controller {
       	$mobile=$cellphone;
 
       	$random=rand(100000,999999);
+      	echo($random);
       	$this->session->set_tempdata('code',$random, 120);
-
+      	$this->session->set_tempdata('phone',$cellphone, 120);
       	$content='您的有礼验证码:'.$random.',如果不是本人操作,请忽略.';
 
       	$url='http://m.5c.com.cn/api/send/index.php?username='.$username.'&password='.$password.'&apikey='.$apikey.'&mobile='.$mobile.'&content='.$content.'';  
@@ -81,29 +87,85 @@ class Message extends CI_Controller {
 
 	    $status=explode(":",$html);
 
-	    $callback['status']='ok';
+	    if ($status[0] == 'success') {
+	    	$callback['status']='ok';
+	    	echo json_encode($callback);
+	   	   return;
+	    }
 
-	    echo json_encode($callback);
-
-	    return;
+	    $callback['status']='fail';
+		$callback['response']=array(
+					'code' => '1500',
+					'message' => 'send message fail'
+				);
+		echo(json_encode($callback));
+		return;
 
 	}
 
 	public function code_check()
 	{
-		$this->load->helper('url');
-		$this->load->library('session');
-		$de_json = (array)json_decode(file_get_contents("php://input"),TRUE);
+		$json=file_get_contents("php://input");
+		if(is_null(json_decode($json)))
+			{
+				$callback=array(
+	        			'code' => '1300',
+	        			'msg' => 'json data invalid'
+	        		);
+
+	        	echo(json_encode($callback));
+	        	return;
+			}
+
+		$de_json = (array)json_decode($json,TRUE);
+
+	 	if (!array_key_exists('code', $de_json) or !array_key_exists('phone', $de_json)) 
+	        {
+	        	$callback=array(
+		        			'code' => '1400',
+		        			'msg' => 'invalid params'
+		        		);
+
+	        	echo(json_encode($callback));
+	        	return;
+	        }
 
 		$code=$de_json['code'];
+		$phone=$de_json['phone'];
+		if (!isset($_SESSION['code']) or !isset($_SESSION['phone'])) 
+		{
+			$callback['status']='fail';
+			$callback['response']=array(
+					'code' => '1500',
+					'message' => 'code is out of date'
+				);
+			
+			echo(json_encode($callback));
+			return;
+		}
+		if ($phone != $_SESSION['phone']) {
+			$callback['status']='fail';
+			$callback['response']=array(
+					'code' => '1500',
+					'message' => 'phone error'
+				);
+		echo(json_encode($callback));
+		return;
 
-		if ($code === $_SESSION['code']) {
+		}
+		echo($_SESSION['code']);
+		if ($code == $_SESSION['code']) {
 			# code...
 			$callback['status']='ok';
 			echo(json_encode($callback));
 			return;
 		}
+
 		$callback['status']='fail';
+		$callback['response']=array(
+					'code' => '1500',
+					'message' => 'code error'
+				);
 		echo(json_encode($callback));
 		return;
 

@@ -122,7 +122,7 @@ class User extends CI_Controller {
 
 		$de_json = (array)json_decode($json,TRUE);
 
-	 	if (!array_key_exists('phone', $de_json) || !array_key_exists('password', $de_json) || !array_key_exists('password2', $de_json) || !array_key_exists('security_code', $de_json)) 
+	 	if (!array_key_exists('phone', $de_json) || !array_key_exists('password', $de_json) || !array_key_exists('password2', $de_json) || !array_key_exists('nickname', $de_json)) 
 	        {
 	        	$callback=array(
 		        			'code' => '1400',
@@ -137,7 +137,7 @@ class User extends CI_Controller {
 		$cellphone = $de_json['phone'];
 		$password = $de_json['password'];
 		$password2 = $de_json['password2'];
-		$security_code = $de_json['security_code'];
+		$nickname = $de_json['nickname'];
 
 		//valid two password is same or not
 		if ($password !== $password2) {
@@ -154,60 +154,10 @@ class User extends CI_Controller {
 		 } 
 
 
-		//valid the code is right or not
-		if (isset($_SESSION['code'])) 
-		{
-			if ($code === $_SESSION['code']) 
-				{
-
-					$callback['status']='fail';
-					$array['response']=array(
-							'code' => '1500',
-							'message' => 'The code is invalid'
-						);
-					$callback=array_merge($callback,$array);
-					echo json_encode($callback);
-
-					return;
-			   }
-				
-		}
-
-		if (!isset($_SESSION['code'])) 
-		{
-			$callback['status']='fail';
-			$array['response']=array(
-							'code' => '1500',
-							'message' => 'The code send fail'
-						);		
-
-			$callback=array_merge($callback,$array);
-			echo json_encode($callback);
-			
-			return;				
-				
-		}
-		
-		// valid the phone number exists or not
-		if ($this->User_model->isPhoneExists($cellphone)) {
-			
-		    //if exists and has been registed
-			if ($this->User_model->is_user_register($cellphone)) {
-				$callback['status']='fail';
-				$array['response']=array(
-					'code' => '1500',
-					'message' => 'The cellphone number has been used'
-				);
-				$callback=array_merge($callback,$array);
-				echo json_encode($callback);
-
-				return;
-			}
-
 			//if exists and has been not registered  excute update
 			if ($this->User_model->is_user_registered($cellphone)) {
 				# excute update_user method
-				if ($this->User_model->update_user_info($cellphone,$password)) {
+				if ($this->User_model->update_user_info($cellphone,$password,$nickname)) {
 					$token=md5(uniqid(md5(microtime(true)),true));
 					$this->session->set_userdata('token',$token,7*24*60*60);
 					$account_id=$this->User_model->get_account_id($cellphone);
@@ -223,14 +173,11 @@ class User extends CI_Controller {
 
 				}
 			}
-			
-
-		}
 		else
 		{
 			$account_id=md5(uniqid(md5(microtime(true)),true));
 
-			if($this->User_model->userRegister($account_id,$cellphone,$password))
+			if($this->User_model->userRegister($account_id,$cellphone,$password,$nickname))
 			{
 				$token=md5(uniqid(md5(microtime(true)),true));
 				$this->session->set_userdata('token',$token,7*24*60*60);

@@ -50,9 +50,9 @@
       * @since 1.0
       * @return bool
       */
-      function userRegister($account_id,$cellphone,$password)
+      function userRegister($account_id,$cellphone,$password,$nickname)
       {
-          $query=$this->db->query("insert into xl_account(id,cellphone,password,register_user) values('{$account_id}','{$cellphone}','{$password}',1)");
+          $query=$this->db->query("insert into xl_account(id,cellphone,password,register_user,nickname) values('{$account_id}','{$cellphone}','{$password}',1,'{$nickname}')");
           if ($this->db->affected_rows() > 0) {
             # if register success, return true
               return TRUE;
@@ -114,7 +114,7 @@
 
       function update_user_info($cellphone,$password)
       {
-        $query=$this->db->query("UPDATE xl_account SET password='{$password}',register_user=1 WHERE cellphone='{$cellphone}' AND register_user=0");
+        $query=$this->db->query("UPDATE xl_account SET password='{$password}',register_user=1,nickname='{$nickname}' WHERE cellphone='{$cellphone}' AND register_user=0");
 
         if ($this->db->affected_rows()>0) {
             #if exist return true
