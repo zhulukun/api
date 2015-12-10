@@ -39,43 +39,43 @@ class Collect extends CI_Controller
 
         $de_json = (array)json_decode($json,TRUE);
 
-        if (!array_key_exists('token', $de_json)) 
-        {
-            $callback=array(
-                        'code' => '1100',
-                        'msg' => 'token do not exist'
-                    );
+        // if (!array_key_exists('token', $de_json)) 
+        // {
+        //     $callback=array(
+        //                 'code' => '1100',
+        //                 'msg' => 'token do not exist'
+        //             );
 
-            echo(json_encode($callback));
-            return;
-        }
+        //     echo(json_encode($callback));
+        //     return;
+        // }
 
        
-        $token=$de_json['token'];
+        // $token=$de_json['token'];
 
-        if (isset($_SESSION['token'])) 
-        {
-            if ($token !== $_SESSION['token']) 
-            {
-                $callback=array(
-                            'code' => '1000',
-                            'msg' => ' Authentication error'
-                        );
+        // if (isset($_SESSION['token'])) 
+        // {
+        //     if ($token !== $_SESSION['token']) 
+        //     {
+        //         $callback=array(
+        //                     'code' => '1000',
+        //                     'msg' => ' Authentication error'
+        //                 );
 
-                echo(json_encode($callback));
-                return;
-            }
-        }
-        else
-        {
-            $callback=array(
-                            'code' => '1200',
-                            'msg' => 'token is out of date'
-                        );
+        //         echo(json_encode($callback));
+        //         return;
+        //     }
+        // }
+        // else
+        // {
+        //     $callback=array(
+        //                     'code' => '1200',
+        //                     'msg' => 'token is out of date'
+        //                 );
 
-                echo(json_encode($callback));
-                return;
-        }
+        //         echo(json_encode($callback));
+        //         return;
+        // }
 
 
         if (!array_key_exists('account_id', $de_json) || !array_key_exists('plan_id', $de_json)) 
