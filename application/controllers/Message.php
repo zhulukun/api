@@ -76,7 +76,6 @@ class Message extends CI_Controller {
       	$mobile=$cellphone;
 
       	$random=rand(100000,999999);
-      	echo($random);
       	$this->session->set_tempdata('code',$random, 120);
       	$this->session->set_tempdata('phone',$cellphone, 120);
       	$content='您的有礼验证码:'.$random.',如果不是本人操作,请忽略.';
