@@ -152,7 +152,6 @@ class Message extends CI_Controller {
 		return;
 
 		}
-		echo($_SESSION['code']);
 		if ($code == $_SESSION['code']) {
 			# code...
 			$callback['status']='ok';
