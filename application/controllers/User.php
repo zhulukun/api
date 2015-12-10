@@ -153,7 +153,20 @@ class User extends CI_Controller {
 			return;
 		 } 
 
-
+// valid the phone number exists or not
+	if ($this->User_model->isPhoneExists($cellphone)) {
+			
+		    //if exists and has been registed
+			if ($this->User_model->is_user_register($cellphone)) {
+				$callback['status']='fail';
+				$array['response']=array(
+					'code' => '1500',
+					'message' => 'The cellphone number has been used'
+				);
+				$callback=array_merge($callback,$array);
+				echo json_encode($callback);
+				return;
+			}
 			//if exists and has been not registered  excute update
 			if ($this->User_model->is_user_registered($cellphone)) {
 				# excute update_user method
@@ -173,6 +186,7 @@ class User extends CI_Controller {
 
 				}
 			}
+		}
 		else
 		{
 			$account_id=md5(uniqid(md5(microtime(true)),true));
