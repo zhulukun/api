@@ -495,9 +495,9 @@ class User extends CI_Controller {
 						    $id=md5(uniqid(md5(microtime(true)),true));
 						  //  $user_info=(array)json_decode($friends_info,TRUE);
 						    $phone=$user_info[$i]['phone'];
-						    $nickname=$user_info[$i]['name'];
+						    $name=$user_info[$i]['name'];
 						    $email=$user_info[$i]['email'];
-							$this->User_model->insert_unregister_user($id,$phone,$nickname,$email);						    
+							$this->User_model->insert_unregister_user($id,$phone,$name,$email);						    
 						}
 
 					}
@@ -540,6 +540,9 @@ class User extends CI_Controller {
 					// die();
 					for ($i=0; $i < count($user_info); $i++) { 
 						
+						 $phone=$user_info[$i]['phone'];
+						 $name=$user_info[$i]['name'];
+				         $email=$user_info[$i]['email'];
 						/**
 						*
 						* judge if the xl_account has the user or not
@@ -547,14 +550,20 @@ class User extends CI_Controller {
 						* if exits don't insert
 						*
 						*/
-
-						if (!($this->User_model->isPhoneExists($user_info[$i]['phone']))) 
+						//如果通讯录增加了新的电话号码，上传到服务器插入
+						if (!($this->User_model->isPhoneExists($phone))) 
 						{
 						    $id=md5(uniqid(md5(microtime(true)),true));
-						    $phone=$user_info[$i]['phone'];
-						    $nickname=$user_info[$i]['name'];
-						    $email=$user_info[$i]['email'];
-							$this->User_model->insert_unregister_user($id,$phone,$nickname,$email);
+	
+							$this->User_model->insert_unregister_user($id,$phone,$name,$email);
+						}
+						else
+						{
+							//如果通信录中好友的姓名，邮箱被更改了，则更新数据库
+							if ($this->User_model->is_local_update($phone,$name,$email))
+							{
+								$this->User_model->update_friend_info($phone,$name,$email);
+							}
 						}
 
 					}

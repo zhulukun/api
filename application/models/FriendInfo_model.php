@@ -105,7 +105,7 @@
 
                     $query_avatar_url=$this->db->query("SELECT avatar_url AS avatar_url FROM xl_avatar WHERE account_id='{$account_id}'");
 
-                    $query_account_info=$this->db->query("SELECT id,nickname,cellphone,sex,birthday,horoscope,status,datetime,type FROM xl_account WHERE id='{$account_id}'");
+                    $query_account_info=$this->db->query("SELECT id,name,nickname,cellphone,sex,birthday,horoscope,status,datetime,type FROM xl_account WHERE id='{$account_id}'");
 
                       $arr = array();
 
