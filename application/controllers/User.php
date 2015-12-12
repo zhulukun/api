@@ -400,6 +400,7 @@ class User extends CI_Controller {
 	{
 
 		$this->load->model('FriendInfo_model');
+		$this->load->model('FriendRelation_model');
 
 		$json=file_get_contents("php://input");
 		if(is_null(json_decode($json)))
@@ -481,7 +482,16 @@ class User extends CI_Controller {
 					$user_info=(array)json_decode($friends_info,TRUE);
 
 					for ($i=0; $i < count($user_info); $i++) { 
-						
+
+							$phone=$user_info[$i]['phone'];
+						    $name=$user_info[$i]['name'];
+						    $email=$user_info[$i]['email'];
+
+						if (!$this->FriendRelation_model->is_friend_exist($phone,$account_id)) 
+						{
+							$this->FriendRelation_model->insert_friend_info($phone,$name,$email,$account_id);
+						}
+
 						/**
 						*
 						* judge if the xl_account has the user or not
@@ -494,10 +504,8 @@ class User extends CI_Controller {
 						{
 						    $id=md5(uniqid(md5(microtime(true)),true));
 						  //  $user_info=(array)json_decode($friends_info,TRUE);
-						    $phone=$user_info[$i]['phone'];
-						    $name=$user_info[$i]['name'];
-						    $email=$user_info[$i]['email'];
-							$this->User_model->insert_unregister_user($id,$phone,$name,$email);						    
+
+							$this->User_model->insert_unregister_user($id,$phone);						    
 						}
 
 					}
@@ -543,6 +551,11 @@ class User extends CI_Controller {
 						 $phone=$user_info[$i]['phone'];
 						 $name=$user_info[$i]['name'];
 				         $email=$user_info[$i]['email'];
+
+				         if (!$this->FriendRelation_model->is_friend_exist($phone,$account_id)) 
+						{
+							$this->FriendRelation_model->insert_friend_info($phone,$name,$email,$account_id);
+						}
 						/**
 						*
 						* judge if the xl_account has the user or not
@@ -555,14 +568,18 @@ class User extends CI_Controller {
 						{
 						    $id=md5(uniqid(md5(microtime(true)),true));
 	
-							$this->User_model->insert_unregister_user($id,$phone,$name,$email);
+							$this->User_model->insert_unregister_user($id,$phone);
 						}
 						else
 						{
-							//如果通信录中好友的姓名，邮箱被更改了，则更新数据库
-							if ($this->User_model->is_local_update($phone,$name,$email))
+							if (!$this->FriendRelation_model->is_friend_exist($phone,$account_id)) 
 							{
-								$this->User_model->update_friend_info($phone,$name,$email);
+								$this->FriendRelation_model->insert_friend_info($phone,$name,$email,$account_id);
+							}
+							//如果通信录中好友的姓名，邮箱被更改了，则更新数据库
+							if ($this->FriendRelation_model->is_local_update($phone,$name,$email,$account_id))
+							{
+								$this->FriendRelation_model->update_friend_info($phone,$name,$email,$account_id);
 							}
 						}
 

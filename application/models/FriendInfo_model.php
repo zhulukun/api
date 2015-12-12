@@ -105,8 +105,7 @@
 
                     $query_avatar_url=$this->db->query("SELECT avatar_url AS avatar_url FROM xl_avatar WHERE account_id='{$account_id}'");
 
-                    $query_account_info=$this->db->query("SELECT id,name,nickname,cellphone,sex,birthday,horoscope,status,datetime,type FROM xl_account WHERE id='{$account_id}'");
-
+                    $query_account_info=$this->db->query("SELECT xl_account.id,xl_account.nickname,xl_account.cellphone,xl_account.sex,xl_account.birthday,xl_account.horoscope,xl_account.status,xl_account.datetime,xl_account.type,xl_friendrelation.name,xl_friendrelation.email FROM xl_account,xl_friendrelation WHERE xl_account.id='{$account_id}' AND xl_account.cellphone=xl_friendrelation.cellphone");
                       $arr = array();
 
                       foreach($query_account_info->result_array() as $row)

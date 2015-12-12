@@ -152,9 +152,9 @@
        * @return bool
        */
 
-      function insert_unregister_user($id,$cellphone,$name,$email)
+      function insert_unregister_user($id,$cellphone)
       {
-          $query=$this->db->query("INSERT INTO xl_account(id,cellphone,name,email,register_user) VALUES ('{$id}','{$cellphone}','{$name}','{$email}',0)");
+          $query=$this->db->query("INSERT INTO xl_account(id,cellphone,register_user) VALUES ('{$id}','{$cellphone}',0)");
          
           if ($this->db->affected_rows()>0) 
           {
@@ -285,26 +285,7 @@
         }
 
 
-        function is_local_update($cellphone,$name,$email)
-        {
-          $query=$this->db->query("SELECT * FROM xl_account WHERE cellphone='{$cellphone}' AND name='{$name}' AND email='{$email}'");
-          if ($query->num_rows()==0) {
-            return TRUE;
-          }
-          return FALSE;
-        }
-
-
-        function update_friend_info($cellphone,$name,$email)
-        {
-          $query=$this->db->query("UPDATE xl_account SET name='{$name}',email='{$email}' WHERE cellphone = '{$cellphone}'");
-          if($this->db->affected_rows()==0)
-          {
-            return FALSE;
-          }
-          return TRUE;
-
-        }
+       
       
     }
 
