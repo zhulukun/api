@@ -147,7 +147,8 @@ class Impress_model extends CI_Model {
             }
             else
             {
-                $temp['score'] = $query1->row_array()['score'];
+                $score_arr=row_array();
+                $temp['score'] = $query1->$score_arr['score'];
             }
 
             //查询头像路径avatar
