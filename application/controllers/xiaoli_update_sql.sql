@@ -18,6 +18,7 @@ create table xl_friendrelation
 (
 	id int(9) not null primary key auto_increment,
 	name varchar(32) not null,
+	cellphone varchar(16) not null,
 	email varchar(64) not null,
 	parent_id varchar(128) not null,
 	CONSTRAINT `xl_accountplanvote_ibfk_100` FOREIGN KEY (`parent_id`) REFERENCES `xl_account` (`id`) ON DELETE CASCADE ON UPDATE CASCADE

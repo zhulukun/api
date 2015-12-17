@@ -264,9 +264,9 @@
 
       }
 
-      function update_account_info($account_id,$nickname,$sex,$birthday,$horoscope,$allow_notice)        
+      function update_account_info($account_id,$sex,$birthday,$horoscope,$allow_notice)        
       {
-            $query=$this->db->query("UPDATE xl_account SET nickname='{$nickname}',sex='{$sex}',birthday='{$birthday}',horoscope='{$horoscope}',allow_notice='{$allow_notice}' WHERE id='{$account_id}'");
+            $query=$this->db->query("UPDATE xl_account SET sex='{$sex}',birthday='{$birthday}',horoscope='{$horoscope}',allow_notice='{$allow_notice}' WHERE id='{$account_id}'");
             if ($this->db->affected_rows()>0) {
                return TRUE;
             }

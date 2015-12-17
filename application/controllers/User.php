@@ -382,7 +382,7 @@ class User extends CI_Controller {
 			return ;
 		}
 
-		$this->session->set_userdata('token',$_SESSION['token'],7*24*60*60);
+		// $this->session->set_userdata('token',$_SESSION['token'],7*24*60*60);
 		$callback=array(
 				"status" => 'ok',
 				"response" => $user_info
@@ -584,7 +584,7 @@ class User extends CI_Controller {
 						}
 
 					}
-					$this->session->set_userdata('token',$_SESSION['token'],7*24*60*60);
+					// $this->session->set_userdata('token',$_SESSION['token'],7*24*60*60);
 					$callback['status']='ok';
 					echo json_encode($callback);
 					return;
@@ -668,7 +668,7 @@ class User extends CI_Controller {
   //       }
 
 
-	 	if (!array_key_exists('account_id', $de_json) || !array_key_exists('page', $de_json) || !array_key_exists('page_size', $de_json) || !array_key_exists('sort', $de_json) || !array_key_exists('only_register', $de_json)) 
+	 	if (!array_key_exists('account_id', $de_json)) 
 	        {
 	        	$callback=array(
 		        			'code' => '1400',
@@ -678,16 +678,12 @@ class User extends CI_Controller {
 	        	echo(json_encode($callback));
 	        	return;
 	        }	
-
-		$account_id=$de_json['account_id'];
-		$page=$de_json['page'];
-		$page_size=$de_json['page_size'];
-		$sort=$de_json['sort'];
-		$only_register=$de_json['only_register'];
-		$user_info=$this->FriendInfo_model->get_all_friends($account_id,$page,$page_size,$sort,$only_register);
-		$this->session->set_userdata('token',$_SESSION['token'],7*24*60*60);
-
-		echo(json_encode($user_info));
+	    $account_id=$de_json['account_id'];
+		$user_info=$this->FriendInfo_model->get_all_friends($account_id);
+		$callback['status']='ok';
+		$callback['response']=$user_info;
+		echo(json_encode($callback));
+        return ;
 	}
 
 	/**
@@ -767,7 +763,7 @@ class User extends CI_Controller {
   //       }
 
 
-	 	if (!array_key_exists('account_id', $de_json) || !array_key_exists('sex', $de_json) || !array_key_exists('birthday', $de_json) || !array_key_exists('horoscope', $de_json) || !array_key_exists('nickname', $de_json) || !array_key_exists('allow_notice', $de_json)) 
+	 	if (!array_key_exists('account_id', $de_json) || !array_key_exists('sex', $de_json) || !array_key_exists('birthday', $de_json) || !array_key_exists('horoscope', $de_json) || !array_key_exists('allow_notice', $de_json)) 
 	        {
 	        	$callback=array(
 		        			'code' => '1400',
@@ -778,13 +774,13 @@ class User extends CI_Controller {
 	        	return;
 	        }
 	    $account_id=$de_json['account_id'];	
-	    $nickname=$de_json['nickname'];
+	    // $nickname=$de_json['nickname'];
 	    $sex=$de_json['sex'];
 	    $birthday=$de_json['birthday'];
 	    $horoscope=$de_json['horoscope'];
 	    $allow_notice=$de_json['allow_notice'];
 
-        $result = $this->User_model->update_account_info($account_id,$nickname,$sex,$birthday,$horoscope,$allow_notice);
+        $result = $this->User_model->update_account_info($account_id,$sex,$birthday,$horoscope,$allow_notice);
 
         if ($result) {
         	$callback['status']='ok';

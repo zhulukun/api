@@ -17,12 +17,116 @@ class Impress extends CI_Controller
 
         $this->load->helper('url');
         $this->load->model('Impress_model');
+        $this->load->model('Impresskeyword_model');
         $this->load->library('session');
                
 
     }
     /**
-     * 获取用户印象
+     * 获取用户按印象数排名前五的印象
+     */
+    public function get_topfive_impresses()
+    {
+        
+
+        $json=file_get_contents("php://input");
+        if(is_null(json_decode($json)))
+            {
+                $callback=array(
+                        'code' => '1300',
+                        'msg' => 'json data invalid'
+                    );
+
+                echo(json_encode($callback));
+                return;
+            }
+
+        $de_json = (array)json_decode($json,TRUE);
+
+        // if (!array_key_exists('token', $de_json)) 
+        // {
+        //     $callback=array(
+        //                 'code' => '1100',
+        //                 'msg' => 'token do not exist'
+        //             );
+
+        //     echo(json_encode($callback));
+        //     return;
+        // }
+
+       
+        // $token=$de_json['token'];
+
+        // if (isset($_SESSION['token'])) 
+        // {
+        //     if ($token !== $_SESSION['token']) 
+        //     {
+        //         $callback=array(
+        //                     'code' => '1000',
+        //                     'msg' => ' Authentication error'
+        //                 );
+
+        //         echo(json_encode($callback));
+        //         return;
+        //     }
+        // }
+        // else
+        // {
+        //     $callback=array(
+        //                     'code' => '1200',
+        //                     'msg' => 'token is out of date'
+        //                 );
+
+        //         echo(json_encode($callback));
+        //         return;
+        // }
+
+
+        if (!array_key_exists('account_id', $de_json)) 
+            {
+                $callback=array(
+                            'code' => '1400',
+                            'msg' => 'invalid params'
+                        );
+
+                echo(json_encode($callback));
+                return;
+            }   
+        
+        //$target_id = $_SESSION['account_id'];
+        $target_id = $de_json['account_id'];
+
+        $count = $this->Impress_model->count_impresses($target_id);
+        if($count == 0)  //查询不到任何印象
+        {
+            //错误处理
+            $callback['status'] = 'fail';
+            $callback['response'] = array('code'=>'1500','message'=>'user no impress');
+            echo json_encode($callback);
+            return;
+        }
+        else
+        {
+            $temp = array();
+            $arr1 = $this->Impress_model->get_impress($target_id);
+            for ($i=0; $i < count($arr1); $i++)  
+            {
+                $temp[$i]['content'] = $arr1[$i]['impress_keyword'];
+                $temp[$i]['count'] = $arr1[$i]['impress_num'];
+                // $temp[$i]['isview'] = $arr1[$i]['isview'];
+                // $temp[$i]['impresstype'] = $arr1[$i]['impresstype'];
+            }
+
+            $arr2['impresses'] = $temp;
+            $callback['status'] = 'ok';
+            $callback['response'] = $arr2;
+            echo json_encode($callback);
+            return;
+        }
+    }
+
+        /**
+     * 获取用户按印象数排名前五的印象
      */
     public function get_impresses()
     {
@@ -106,22 +210,143 @@ class Impress extends CI_Controller
         }
         else
         {
-            $impresses = array();
-            $arr1 = $this->Impress_model->get_impress($target_id);
-            foreach($arr1 as $row)
+            $temp1 = array();
+            $temp2 = array();
+            $temp3 = array();
+            $arr1 = $this->Impress_model->get_impress_relation($target_id);
+            $arr2 = $this->Impress_model->get_impress_character($target_id);
+            $arr3 = $this->Impress_model->get_impress_like($target_id);
+
+            for ($i=0; $i < count($arr1); $i++)  
             {
-                $temp['content'] = $row['impresscontent'];
-                $temp['count'] = $count;
-                array_push($impresses, $temp);
+                $temp1[$i]['content'] = $arr1[$i]['impress_keyword'];
+                $temp1[$i]['count'] = $arr1[$i]['impress_num'];
+                $temp1[$i]['isview'] = $arr1[$i]['isview'];
             }
 
-            $arr2['impresses'] = $impresses;
+            for ($i=0; $i < count($arr2); $i++)  
+            {
+                $temp2[$i]['content'] = $arr2[$i]['impress_keyword'];
+                $temp2[$i]['count'] = $arr2[$i]['impress_num'];
+                $temp2[$i]['isview'] = $arr2[$i]['isview'];
+            }
+            for ($i=0; $i < count($arr3); $i++)  
+            {
+                $temp3[$i]['content'] = $arr3[$i]['impress_keyword'];
+                $temp3[$i]['count'] = $arr3[$i]['impress_num'];
+                $temp3[$i]['isview'] = $arr3[$i]['isview'];
+            }
+
+            $callback['status'] = 'ok';
+            $callback['response'] = array(
+                            'relation' => $temp1,
+                            'character' =>$temp2,
+                            'like' => $temp3
+                );
+            echo json_encode($callback);
+            return;
+        }
+    }
+    //获取用户关系相关的印象
+    public function get_impresses_relation()
+    {
+        
+
+        $json=file_get_contents("php://input");
+        if(is_null(json_decode($json)))
+            {
+                $callback=array(
+                        'code' => '1300',
+                        'msg' => 'json data invalid'
+                    );
+
+                echo(json_encode($callback));
+                return;
+            }
+
+        $de_json = (array)json_decode($json,TRUE);
+
+        // if (!array_key_exists('token', $de_json)) 
+        // {
+        //     $callback=array(
+        //                 'code' => '1100',
+        //                 'msg' => 'token do not exist'
+        //             );
+
+        //     echo(json_encode($callback));
+        //     return;
+        // }
+
+       
+        // $token=$de_json['token'];
+
+        // if (isset($_SESSION['token'])) 
+        // {
+        //     if ($token !== $_SESSION['token']) 
+        //     {
+        //         $callback=array(
+        //                     'code' => '1000',
+        //                     'msg' => ' Authentication error'
+        //                 );
+
+        //         echo(json_encode($callback));
+        //         return;
+        //     }
+        // }
+        // else
+        // {
+        //     $callback=array(
+        //                     'code' => '1200',
+        //                     'msg' => 'token is out of date'
+        //                 );
+
+        //         echo(json_encode($callback));
+        //         return;
+        // }
+
+
+        if (!array_key_exists('account_id', $de_json)) 
+            {
+                $callback=array(
+                            'code' => '1400',
+                            'msg' => 'invalid params'
+                        );
+
+                echo(json_encode($callback));
+                return;
+            }   
+        
+        //$target_id = $_SESSION['account_id'];
+        $target_id = $de_json['account_id'];
+
+        $count = $this->Impress_model->count_impresses($target_id);
+        if($count == 0)  //查询不到任何印象
+        {
+            //错误处理
+            $callback['status'] = 'fail';
+            $callback['response'] = array('code'=>'1500','message'=>'user no impress');
+            echo json_encode($callback);
+            return;
+        }
+        else
+        {
+            $temp = array();
+            $arr1 = $this->Impress_model->get_impress($target_id);
+
+            for ($i=0; $i < count($arr1); $i++)  
+            {
+                $temp[$i]['content'] = $arr1[$i]['impress_keyword'];
+                $temp[$i]['count'] = $arr1[$i]['impress_num'];
+            }
+
+            $arr2['impresses'] = $temp;
             $callback['status'] = 'ok';
             $callback['response'] = $arr2;
             echo json_encode($callback);
             return;
         }
     }
+
 
     /**
      * 获取用户印象详情
@@ -315,46 +540,46 @@ class Impress extends CI_Controller
 
         $de_json = (array)json_decode($json,TRUE);
 
-        if (!array_key_exists('token', $de_json)) 
-        {
-            $callback=array(
-                        'code' => '1100',
-                        'msg' => 'token do not exist'
-                    );
+        // if (!array_key_exists('token', $de_json)) 
+        // {
+        //     $callback=array(
+        //                 'code' => '1100',
+        //                 'msg' => 'token do not exist'
+        //             );
 
-            echo(json_encode($callback));
-            return;
-        }
+        //     echo(json_encode($callback));
+        //     return;
+        // }
 
        
-        $token=$de_json['token'];
+        // $token=$de_json['token'];
 
-        if (isset($_SESSION['token'])) 
-        {
-            if ($token !== $_SESSION['token']) 
-            {
-                $callback=array(
-                            'code' => '1000',
-                            'msg' => ' Authentication error'
-                        );
+        // if (isset($_SESSION['token'])) 
+        // {
+        //     if ($token !== $_SESSION['token']) 
+        //     {
+        //         $callback=array(
+        //                     'code' => '1000',
+        //                     'msg' => ' Authentication error'
+        //                 );
 
-                echo(json_encode($callback));
-                return;
-            }
-        }
-        else
-        {
-            $callback=array(
-                            'code' => '1200',
-                            'msg' => 'token is out of date'
-                        );
+        //         echo(json_encode($callback));
+        //         return;
+        //     }
+        // }
+        // else
+        // {
+        //     $callback=array(
+        //                     'code' => '1200',
+        //                     'msg' => 'token is out of date'
+        //                 );
 
-                echo(json_encode($callback));
-                return;
-        }
+        //         echo(json_encode($callback));
+        //         return;
+        // }
 
 
-        if (!array_key_exists('target_id', $de_json) ||!array_key_exists('operator_id', $de_json) ||!array_key_exists('content', $de_json)) 
+        if (!array_key_exists('target_id', $de_json) ||!array_key_exists('operator_id', $de_json) ||!array_key_exists('content', $de_json) ||!array_key_exists('impress_type', $de_json) ||!array_key_exists('is_hidden_user', $de_json)) 
             {
                 $callback=array(
                             'code' => '1400',
@@ -368,38 +593,59 @@ class Impress extends CI_Controller
         $target_id = $de_json['target_id'];
         $operator_id = $de_json['operator_id'];
         $content = $de_json['content'];
+        $impress_type=$de_json['impress_type'];
+        $is_hidden_user=$de_json['is_hidden_user'];
 
-        $fail_flag = FALSE;
-        $fail_content = '';
+        $content_len=count($content);
+
+        if ($content_len>4) 
+        {
+            $callback['status'] = 'fail';
+            $callback['response'] = array('code'=>'1500','message'=>'impress can not be added more than 4 ');
+            echo(json_encode($callback));
+            return;
+        }
+        $result=TRUE;
+        for ($i=0; $i < $content_len; $i++) 
+        { 
+
+            if ($this->Impresskeyword_model->is_impress_exist($target_id,$content[$i]['content'])) {
+                $this->Impresskeyword_model->update_impress_num($target_id,$content[$i]['content'],1);
+            }
+            else
+            {
+                $this->Impresskeyword_model->insert_impress($target_id,$content[$i]['content'],$impress_type);
+            }
+
             $arr = array();
 
             $arr['id'] = md5(uniqid(md5(microtime(true)),true));
 
             $arr['target_id'] = $target_id;
             $arr['operator_id'] = $operator_id;
-            $arr['impresscontent'] = $content;
-            $arr['impresstype'] = 'useradded';
-
+            $arr['impresscontent'] = $content[$i]['content'];
+            $arr['impresstype'] = $impress_type;
+            $arr['is_hidden_user']=$is_hidden_user;
             $result = $this->Impress_model->add_impress($arr);
-            if(!$result)
-            {
-                $fail_flag = TRUE;
-                $fail_content = $fail_content.' and '.$impress_content;
-            }
+            $result=$result&&$result;
 
-        if($fail_flag)
+        } 
+        if ($result) 
         {
-            $callback['status'] = 'fail';
-            $callback['response'] = array('code'=>'1500','message'=>'impress content '.$fail_content.' insert failed');
-            echo(json_encode($callback));
-            return;
+             $callback['status'] = 'ok';
+              echo json_encode($callback);
+             return;
         }
         else
         {
-            $callback['status'] = 'ok';
-             echo json_encode($callback);
-             return;
+            $callback['status'] = 'fail';
+            $callback['response'] = array('code'=>'1500','message'=>'fail to add impress');
+            echo(json_encode($callback));
+            return;
         }
+           
+
+        
        
     }
 
@@ -550,4 +796,13 @@ class Impress extends CI_Controller
         $callback['response'] = $arr2;
         echo json_encode($callback);
     }
+
+    //设置印象内容不可见
+
+    public function set_impress_hidden()
+    {
+        return ;
+    }
+
+
 }

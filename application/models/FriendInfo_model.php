@@ -10,7 +10,7 @@
         
         }
 
-        /**
+    /**
     	* add user's friends info into the database
      	*
      	* @param id account_id friends_info
@@ -55,200 +55,103 @@
         * @return jsonArray
         */
 
-        function get_all_friends($account_id,$page,$page_size,$sort,$only_register)
+        function get_all_friends($target_id)
         {
             
-            $query=$this->db->query("SELECT friend_info FROM xl_friendinfo WHERE account_id='{$account_id}'");
-            
-            $arr = array();
-
-            foreach($query->result_array() as $row)
-              {
-                    array_push($arr,$row);
-              }
-            if (count($arr)>0) {
-
-               $arr_friends=(array)json_decode($arr[0]['friend_info'],TRUE);
-
-            }
-            else
-            {
-              return $arr;
-            }
-          $users_info=array();
-           $index=0;
-            for ($i=0; $i <count($arr_friends); $i++) 
-            {   
-                $cellphone=$arr_friends[$i]['phone'];
-                if ($only_register === 0 ) 
-                {
-                  $query=$this->db->query("SELECT id FROM xl_account WHERE cellphone='{$cellphone}'");
-                }
-                if ($only_register === 1) 
-                {
-                  $query=$this->db->query("SELECT id from xl_account where cellphone='{$cellphone}' and register_user=1");
-                }
-
-           if ($query->num_rows()>0) 
-                {
-
-                $arr = array();
-
+              $query=$this->db->query("SELECT cellphone FROM xl_friendrelation WHERE parent_id='{$target_id}'");
+              $arr1=array();
+              $user_array=array();
+              if ($query->num_rows()>0) {
                 foreach($query->result_array() as $row)
-                  {
-                        array_push($arr,$row);
-                  }     
-
-                    $account_id=$arr[0]['id'];
-
-                    //$query_avg_score=$this->db->query("SELECT AVG(score) AS score FROM xl_score WHERE target_id='{$account_id}'");
-
-                    $query_avatar_url=$this->db->query("SELECT avatar_url AS avatar_url FROM xl_avatar WHERE account_id='{$account_id}'");
-
-                    $query_account_info=$this->db->query("SELECT xl_account.id,xl_account.nickname,xl_account.cellphone,xl_account.sex,xl_account.birthday,xl_account.horoscope,xl_account.status,xl_account.datetime,xl_account.type,xl_friendrelation.name,xl_friendrelation.email FROM xl_account,xl_friendrelation WHERE xl_account.id='{$account_id}' AND xl_account.cellphone=xl_friendrelation.cellphone");
-                      $arr = array();
-
-                      foreach($query_account_info->result_array() as $row)
-                      {
-                            array_push($arr,$row);
-                      }
-
-                     $user_info=$arr[0];
-
-
-                     // if ($query_avg_score->num_rows()>0) {
-                        
-                     //    $arr_score = array();
-
-                     //    foreach($query_avg_score->result_array() as $row)
-                     //    {
-                     //          array_push($arr_score,$row);
-                     //    }
-
-                     //    $score=number_format($arr_score[0]['score'], 2, '.', '');
-                     //    $user_score=array('score' => $score );
-                     // }
-                     // else
-                     // {
-                     //    $user_score=array('score' => '无', );
-                     // }
-
-                     if ($query_avatar_url->num_rows()>0) 
-                     {
-                        $arr_avatar = array();
-
-                        foreach($query_avatar->result_array() as $row)
-                        {
-                              array_push($arr_score,$row);
-                        }
-
-                        $user_avatar=$arr_avatar[0];
-
-                     }
-                     else
-                     {
-                        $user_avatar=array('avatar_url' => '', );
-
-                     }
-
-                     $user_info=array_merge($user_info, $user_avatar);
-                   //  $user_info=array_merge($user_info,$user_score);
-
-                     $users_info[$index]=$user_info;
-                     $index++;
-                }
-            }
-           // echo(count($user_info));
-            $total_page=ceil(count($users_info)/$page_size);
-              // desc by datetime
-              if ($sort == '-id') 
-              {
-                for ($i=0; $i < count($users_info)-1; $i++) 
-                {
-                  for ($j=$i; $j < count($users_info); $j++) 
-                  { 
-                     if (strtotime($users_info[$i]['datetime'])<=strtotime($users_info[$j]['datetime'])) 
-                     {
-                        $temp=$users_info[$j];
-                        $users_info[$j]=$users_info[$i];
-                        $users_info[$i]=$temp;
-                     }
-                   } 
-
-                }
+                 {
+                    array_push($arr1,$row);
+                 }
               }
+              if (count($arr1)>0) {
+                for ($i=0; $i < count($arr1); $i++) {
+                          $account_id=$this->get_account_id($arr1[$i]['cellphone']); 
+                          if (!isset($account_id)) {
+                            break;
+                          }
+                          $query_avatar_url=$this->db->query("SELECT avatar_url AS avatar_url FROM xl_avatar WHERE account_id='{$account_id}'");
 
-            if ($sort == 'id') 
-              {
-                for ($i=0; $i < count($users_info)-1; $i++) 
-                {
-                  for ($j=$i; $j < count($users_info); $j++) 
-                  { 
-                     if (strtotime($users_info[$i]['datetime'])>=strtotime($users_info[$j]['datetime'])) 
-                     {
-                        $temp=$users_info[$j];
-                        $users_info[$j]=$users_info[$i];
-                        $users_info[$i]=$temp;
-                     }
-                   } 
+                          $query_account_info=$this->db->query("SELECT xl_account.id,xl_account.nickname,xl_account.cellphone,xl_account.sex,xl_account.birthday,xl_account.horoscope,xl_account.status,xl_account.register_user,xl_account.type,xl_friendrelation.name,xl_friendrelation.email FROM xl_account,xl_friendrelation WHERE xl_account.id='{$account_id}' AND xl_account.cellphone=xl_friendrelation.cellphone");
+
+                          $arr = array();
+
+                          foreach($query_account_info->result_array() as $row)
+                          {
+                                array_push($arr,$row);
+                          }
+                         $user_info=array();
+
+                         if (count($arr)==0) 
+                         {
+                          
+                           return $user_info;
+                         }
+
+                        $user_info=$arr[0];
+
+                         if ($query_avatar_url->num_rows()>0) 
+                         {
+                            $arr_avatar = array();
+
+                            foreach($query_avatar->result_array() as $row)
+                            {
+                                  array_push($arr_score,$row);
+                            }
+
+                            $user_avatar=$arr_avatar[0];
+
+                         }
+                         else
+                         {
+                            $user_avatar=array('avatar_url' => '', );
+
+                         }
+                      $impress['impress']=$this->get_impress($account_id);
+
+                      $user_info=array_merge($user_info, $user_avatar);
+                      $user_info=array_merge($user_info,$impress);
+                      $user_array[$i]=$user_info;
 
                 }
+
               }
-
-              if ($sort == '-score') 
-              {
-                for ($i=0; $i < count($users_info)-1; $i++) 
-                {
-                  for ($j=$i; $j < count($users_info); $j++) 
-                  { 
-                     if (strtotime($users_info[$i]['score'])<=strtotime($users_info[$j]['score'])) 
-                     {
-                        $temp=$users_info[$j];
-                        $users_info[$j]=$users_info[$i];
-                        $users_info[$i]=$temp;
-                     }
-                   } 
-
-                }
-              }
-
-              if ($sort == 'score') 
-              {
-                for ($i=0; $i < count($users_info)-1; $i++) 
-                {
-                  for ($j=$i; $j < count($users_info); $j++) 
-                  { 
-                     if (strtotime($users_info[$i]['score'])>=strtotime($users_info[$j]['score'])) 
-                     {
-                        $temp=$users_info[$j];
-                        $users_info[$j]=$users_info[$i];
-                        $users_info[$i]=$temp;
-                     }
-                   } 
-                }
-              }
-
-              //pagedivide 
-              $final_index=0; 
-              
-              $userinfos=array();
-              for ($i=($page-1)*$page_size; $i <($page-1)*$page_size+$page_size && $i<count($users_info); $i++) 
+              for ($i=0; $i <count($user_array)-1; $i++) 
               { 
-                  $userinfos[$final_index]=$users_info[$i];
-                  $final_index++;
+                  $start=$this->_getFirstCharter($user_array[$i]['nickname']);
+
+                  for ($j=$i+1; $j < count($user_array); $j++) { 
+                   $end=$this->_getFirstCharter($user_array[$j]['nickname']);
+                   if ($start=='unknow' && $end !='unkonw') {
+                      $temp=$user_array[$i];
+                      $user_array[$i]=$user_array[$j];
+                      $user_array[$j]=$temp;
+                   }
+                   if ($start >= $end && $start!='unknow' &&$end!='unknow') {
+                      $temp=$user_array[$i];
+                      $user_array[$i]=$user_array[$j];
+                      $user_array[$j]=$temp;
+                   }
+
+
+                  }
               }
 
-              $total= count($userinfos);
-              $callback=array();
-              $callback['status']='ok';
-              $callback['response']=array(
-                          "page" => $page,
-                          "page_size" => $page_size,
-                          "total_page" => $total_page,
-                          "friends" =>$userinfos
-                      );
+              return $user_array;
 
-                return $callback;        
+              // $callback=array();
+              // $callback['status']='ok';
+              // $callback['response']=array(
+              //             "page" => $page,
+              //             "page_size" => $page_size,
+              //             "total_page" => $total_page,
+              //             "friends" =>$userinfos
+              //         );
+
+              //   return $callback;        
               
 
 
@@ -276,7 +179,6 @@
             return count((array)json_decode($arr[0]['friend_info'],TRUE));
         }
 
-
        /**
     	* judge the user's friends is added or not.
      	*
@@ -296,8 +198,78 @@
         	return FALSE;
         }
 
+        function get_account_id($phone)
+        {
+
+          $query=$this->db->query("SELECT id FROM xl_account WHERE cellphone='{$phone}'");
+          $arr = array();
+          if ($query->num_rows()>0) {
+
+                  foreach($query->result_array() as $row)
+                     {
+                         array_push($arr,$row);
+                     }
+          }
+          if (count($arr)>0) {
+               return $arr[0]['id'];
+          }
+          return;
+        }
 
 
+    /**
+     * obtain user's impress
+     *
+     * @param target_id
+     * @return array
+     */
+    function get_impress($target_id)
+    {
+        $query = $this->db->query("SELECT impress_keyword,impress_num FROM xl_impress_keyword WHERE target_id ='{$target_id}' AND isview=1 ORDER BY impress_num DESC LIMIT 0,5");
+
+        $arr = array();
+
+        foreach($query->result_array() as $row)
+        {
+            array_push($arr,$row);
+        }
+        return $arr;
+    }
+
+    //获取汉字的第一个字母
+    function _getFirstCharter($str){  
+if(empty($str)){return 'unkonw';}  
+$fchar=ord($str{0});  
+if($fchar>=ord('A')&&$fchar<=ord('z')) return strtoupper($str{0});  
+$s1=iconv('UTF-8','gb2312',$str);  
+$s2=iconv('gb2312','UTF-8',$s1);  
+$s=$s2==$str?$s1:$str;  
+$asc=ord($s{0})*256+ord($s{1})-65536;  
+if($asc>=-20319&&$asc<=-20284) return 'A';  
+if($asc>=-20283&&$asc<=-19776) return 'B';  
+if($asc>=-19775&&$asc<=-19219) return 'C';  
+if($asc>=-19218&&$asc<=-18711) return 'D';  
+if($asc>=-18710&&$asc<=-18527) return 'E';  
+if($asc>=-18526&&$asc<=-18240) return 'F';  
+if($asc>=-18239&&$asc<=-17923) return 'G';  
+if($asc>=-17922&&$asc<=-17418) return 'H';  
+if($asc>=-17417&&$asc<=-16475) return 'J';  
+if($asc>=-16474&&$asc<=-16213) return 'K';  
+if($asc>=-16212&&$asc<=-15641) return 'L';  
+if($asc>=-15640&&$asc<=-15166) return 'M';  
+if($asc>=-15165&&$asc<=-14923) return 'N';  
+if($asc>=-14922&&$asc<=-14915) return 'O';  
+if($asc>=-14914&&$asc<=-14631) return 'P';  
+if($asc>=-14630&&$asc<=-14150) return 'Q';  
+if($asc>=-14149&&$asc<=-14091) return 'R';  
+if($asc>=-14090&&$asc<=-13319) return 'S';  
+if($asc>=-13318&&$asc<=-12839) return 'T';  
+if($asc>=-12838&&$asc<=-12557) return 'W';  
+if($asc>=-12556&&$asc<=-11848) return 'X';  
+if($asc>=-11847&&$asc<=-11056) return 'Y';  
+if($asc>=-11055&&$asc<=-10247) return 'Z';  
+return 'unknow';  
+   }  
         
     }
 

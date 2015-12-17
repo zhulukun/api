@@ -26,7 +26,7 @@ class Impress_model extends CI_Model {
      */
     function count_impresses($target_id)
     {
-        $query = $this->db->query("SELECT * FROM xl_impress WHERE target_id = '{$target_id}'");
+        $query = $this->db->query("SELECT * FROM xl_impress_keyword WHERE target_id = '{$target_id}'");
 
         return $query->num_rows();
     }
@@ -39,7 +39,62 @@ class Impress_model extends CI_Model {
      */
     function get_impress($target_id)
     {
-        $query = $this->db->query("SELECT impresscontent FROM xl_impress WHERE target_id = '{$target_id}'");
+        $query = $this->db->query("SELECT impress_keyword,impress_num,isview,impresstype FROM xl_impress_keyword WHERE target_id ='{$target_id}' AND isview=1 ORDER BY impress_num DESC LIMIT 0,5");
+
+        $arr = array();
+
+        foreach($query->result_array() as $row)
+        {
+            array_push($arr,$row);
+        }
+        return $arr;
+    }
+
+    /**
+     * obtain user's impress
+     *
+     * @param target_id
+     * @return array
+     */
+    function get_impress_like($target_id)
+    {
+        $query = $this->db->query("SELECT impress_keyword,impress_num,isview,impresstype FROM xl_impress_keyword WHERE target_id ='{$target_id}' AND impresstype=3 ORDER BY impress_num DESC");
+
+        $arr = array();
+
+        foreach($query->result_array() as $row)
+        {
+            array_push($arr,$row);
+        }
+        return $arr;
+    }
+    /**
+     * obtain user's impress
+     *
+     * @param target_id
+     * @return array
+     */
+    function get_impress_relation($target_id)
+    {
+        $query = $this->db->query("SELECT impress_keyword,impress_num,isview,impresstype FROM xl_impress_keyword WHERE target_id ='{$target_id}' AND impresstype=1 ORDER BY impress_num DESC ");
+
+        $arr = array();
+
+        foreach($query->result_array() as $row)
+        {
+            array_push($arr,$row);
+        }
+        return $arr;
+    }
+    /**
+     * obtain user's impress
+     *
+     * @param target_id
+     * @return array
+     */
+    function get_impress_character($target_id)
+    {
+        $query = $this->db->query("SELECT impress_keyword,impress_num,isview,impresstype FROM xl_impress_keyword WHERE target_id ='{$target_id}' AND impresstype=2 ORDER BY impress_num DESC");
 
         $arr = array();
 
@@ -177,4 +232,7 @@ class Impress_model extends CI_Model {
         }
         return $arr;
     }
+    
+
+
 }
