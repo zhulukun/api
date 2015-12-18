@@ -121,10 +121,10 @@
               }
               for ($i=0; $i <count($user_array)-1; $i++) 
               { 
-                  $start=$this->_getFirstCharter($user_array[$i]['nickname']);
+                  $start=$this->_getFirstCharter($user_array[$i]['name']);
 
                   for ($j=$i+1; $j < count($user_array); $j++) { 
-                   $end=$this->_getFirstCharter($user_array[$j]['nickname']);
+                   $end=$this->_getFirstCharter($user_array[$j]['name']);
                    if ($start=='unknow' && $end !='unkonw') {
                       $temp=$user_array[$i];
                       $user_array[$i]=$user_array[$j];
