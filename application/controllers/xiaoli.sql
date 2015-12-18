@@ -537,4 +537,27 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-12-18  0:24:58
+-- Dump completed on 2015-12-18 14:34:56
+
+
+DROP TABLE IF EXISTS `xl_impress_relation`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `xl_impress_relation` (
+  `id` int(16) not null PRIMARY KEY AUTO_INCREMENT,
+  `operator_id` varchar(64) NOT NULL,
+  `target_id` varchar(64) NOT NULL,
+  `impresscontent` varchar(128) NOT NULL,
+  CONSTRAINT `xl_impress_relation_ibfk_1` FOREIGN KEY (`target_id`) REFERENCES `xl_account` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `xl_impress_relation_ibfk_2` FOREIGN KEY (`operator_id`) REFERENCES `xl_account` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `xl_systemkeywords`
+--
+
+LOCK TABLES `xl_impress_relation` WRITE;
+
+UNLOCK TABLES;

@@ -18,6 +18,7 @@ class Impress extends CI_Controller
         $this->load->helper('url');
         $this->load->model('Impress_model');
         $this->load->model('Impresskeyword_model');
+        $this->load->model('ImpressRelation_model');
         $this->load->library('session');
                
 
@@ -406,7 +407,7 @@ class Impress extends CI_Controller
         // }
 
 
-        if (!array_key_exists('account_id', $de_json) ||!array_key_exists('page', $de_json) ||!array_key_exists('page_size', $de_json)) 
+        if (!array_key_exists('account_id', $de_json) ) 
             {
                 $callback=array(
                             'code' => '1400',
@@ -420,9 +421,7 @@ class Impress extends CI_Controller
 
 
         $target_id = $de_json['account_id'];
-        $page = $de_json['page'];
-        $page_size = $de_json['page_size'];
-
+     
         $count = $this->Impress_model->count_impresses($target_id);
         if($count == 0)  
         {
@@ -433,12 +432,7 @@ class Impress extends CI_Controller
         }
         else
         {
-            $result = $this->Impress_model->get_impress_details($target_id,$page,$page_size);
-
-            $arr1['page'] = $page;
-            $arr1['page_size'] = $page_size;
-            $arr1['total_page'] = ceil($count/$page_size);
-
+            $result = $this->Impress_model->get_impress_details($target_id);
             $id = '';
             $arr2 = array();  //account
             $arr3 = array();  //impress
@@ -540,45 +534,7 @@ class Impress extends CI_Controller
 
         $de_json = (array)json_decode($json,TRUE);
 
-        // if (!array_key_exists('token', $de_json)) 
-        // {
-        //     $callback=array(
-        //                 'code' => '1100',
-        //                 'msg' => 'token do not exist'
-        //             );
-
-        //     echo(json_encode($callback));
-        //     return;
-        // }
-
-       
-        // $token=$de_json['token'];
-
-        // if (isset($_SESSION['token'])) 
-        // {
-        //     if ($token !== $_SESSION['token']) 
-        //     {
-        //         $callback=array(
-        //                     'code' => '1000',
-        //                     'msg' => ' Authentication error'
-        //                 );
-
-        //         echo(json_encode($callback));
-        //         return;
-        //     }
-        // }
-        // else
-        // {
-        //     $callback=array(
-        //                     'code' => '1200',
-        //                     'msg' => 'token is out of date'
-        //                 );
-
-        //         echo(json_encode($callback));
-        //         return;
-        // }
-
-
+    
         if (!array_key_exists('target_id', $de_json) ||!array_key_exists('operator_id', $de_json) ||!array_key_exists('content', $de_json) ||!array_key_exists('impress_type', $de_json) ||!array_key_exists('is_hidden_user', $de_json)) 
             {
                 $callback=array(
@@ -608,6 +564,10 @@ class Impress extends CI_Controller
         $result=TRUE;
         for ($i=0; $i < $content_len; $i++) 
         { 
+            // if($this->ImpressRelation_model->is_useradd_theimpress($))
+            // {
+            //     continue;
+            // }
 
             if ($this->Impresskeyword_model->is_impress_exist($target_id,$content[$i]['content'])) {
                 $this->Impresskeyword_model->update_impress_num($target_id,$content[$i]['content'],1);
@@ -668,45 +628,6 @@ class Impress extends CI_Controller
             }
 
         $de_json = (array)json_decode($json,TRUE);
-
-        if (!array_key_exists('token', $de_json)) 
-        {
-            $callback=array(
-                        'code' => '1100',
-                        'msg' => 'token do not exist'
-                    );
-
-            echo(json_encode($callback));
-            return;
-        }
-
-       
-        $token=$de_json['token'];
-
-        if (isset($_SESSION['token'])) 
-        {
-            if ($token !== $_SESSION['token']) 
-            {
-                $callback=array(
-                            'code' => '1000',
-                            'msg' => ' Authentication error'
-                        );
-
-                echo(json_encode($callback));
-                return;
-            }
-        }
-        else
-        {
-            $callback=array(
-                            'code' => '1200',
-                            'msg' => 'token is out of date'
-                        );
-
-                echo(json_encode($callback));
-                return;
-        }
-
 
         $result = $this->Impress_model->get_preset_impresses();
 
