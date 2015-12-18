@@ -18,7 +18,6 @@ class Impress extends CI_Controller
         $this->load->helper('url');
         $this->load->model('Impress_model');
         $this->load->model('Impresskeyword_model');
-        $this->load->model('ImpressRelation_model');
         $this->load->library('session');
                
 
@@ -147,43 +146,6 @@ class Impress extends CI_Controller
 
         $de_json = (array)json_decode($json,TRUE);
 
-        // if (!array_key_exists('token', $de_json)) 
-        // {
-        //     $callback=array(
-        //                 'code' => '1100',
-        //                 'msg' => 'token do not exist'
-        //             );
-
-        //     echo(json_encode($callback));
-        //     return;
-        // }
-
-       
-        // $token=$de_json['token'];
-
-        // if (isset($_SESSION['token'])) 
-        // {
-        //     if ($token !== $_SESSION['token']) 
-        //     {
-        //         $callback=array(
-        //                     'code' => '1000',
-        //                     'msg' => ' Authentication error'
-        //                 );
-
-        //         echo(json_encode($callback));
-        //         return;
-        //     }
-        // }
-        // else
-        // {
-        //     $callback=array(
-        //                     'code' => '1200',
-        //                     'msg' => 'token is out of date'
-        //                 );
-
-        //         echo(json_encode($callback));
-        //         return;
-        // }
 
 
         if (!array_key_exists('account_id', $de_json)) 
@@ -267,44 +229,6 @@ class Impress extends CI_Controller
 
         $de_json = (array)json_decode($json,TRUE);
 
-        // if (!array_key_exists('token', $de_json)) 
-        // {
-        //     $callback=array(
-        //                 'code' => '1100',
-        //                 'msg' => 'token do not exist'
-        //             );
-
-        //     echo(json_encode($callback));
-        //     return;
-        // }
-
-       
-        // $token=$de_json['token'];
-
-        // if (isset($_SESSION['token'])) 
-        // {
-        //     if ($token !== $_SESSION['token']) 
-        //     {
-        //         $callback=array(
-        //                     'code' => '1000',
-        //                     'msg' => ' Authentication error'
-        //                 );
-
-        //         echo(json_encode($callback));
-        //         return;
-        //     }
-        // }
-        // else
-        // {
-        //     $callback=array(
-        //                     'code' => '1200',
-        //                     'msg' => 'token is out of date'
-        //                 );
-
-        //         echo(json_encode($callback));
-        //         return;
-        // }
-
 
         if (!array_key_exists('account_id', $de_json)) 
             {
@@ -368,44 +292,7 @@ class Impress extends CI_Controller
 
         $de_json = (array)json_decode($json,TRUE);
 
-        // if (!array_key_exists('token', $de_json)) 
-        // {
-        //     $callback=array(
-        //                 'code' => '1100',
-        //                 'msg' => 'token do not exist'
-        //             );
-
-        //     echo(json_encode($callback));
-        //     return;
-        // }
-
-       
-        // $token=$de_json['token'];
-
-        // if (isset($_SESSION['token'])) 
-        // {
-        //     if ($token !== $_SESSION['token']) 
-        //     {
-        //         $callback=array(
-        //                     'code' => '1000',
-        //                     'msg' => ' Authentication error'
-        //                 );
-
-        //         echo(json_encode($callback));
-        //         return;
-        //     }
-        // }
-        // else
-        // {
-        //     $callback=array(
-        //                     'code' => '1200',
-        //                     'msg' => 'token is out of date'
-        //                 );
-
-        //         echo(json_encode($callback));
-        //         return;
-        // }
-
+        
 
         if (!array_key_exists('account_id', $de_json) ) 
             {
@@ -432,83 +319,10 @@ class Impress extends CI_Controller
         }
         else
         {
-            $result = $this->Impress_model->get_impress_details($target_id);
-            $id = '';
-            $arr2 = array();  //account
-            $arr3 = array();  //impress
-            $arr4 = array();  //contents
-            $arr5 = array();  //impress_details
-            foreach ($result as $row) 
-            {
-                $temp = array();
-
-                if($id == '')
-                {
-                    $id = $row['id'];
-                    $arr2['id'] = $row['id'];
-                    $arr2['nickname'] = $row['nickname'];
-                    $arr2['cellphone'] = $row['cellphone'];
-                    $arr2['email'] = $row['email'];
-                    $arr2['sex'] = $row['sex'];
-                    $arr2['birthday'] = $row['birthday'];
-                    $arr2['horoscope'] = $row['horoscope'];
-                    $arr2['status'] = $row['status'];
-                    $arr2['type'] = $row['type'];
-                    // $arr2['score'] = $row['score'];
-                    $arr2['avatar_url'] = $row['avatar_url'];
-                    $arr2['allow_notice'] = $row['allow_notice'];
-                 //   $arr2['allow_score'] = $row['allow_score'];
-
-                    $temp['id'] = $row['impress_id'];
-                    $temp['content'] = $row['impresscontent'];
-                    array_push($arr3,$temp);
-                }
-                else
-                {
-                    if($row['id'] != $id)  //有了新的account_id
-                    {
-                        //将之前的数据封装
-                        $arr4['account'] = $arr2;
-                        $arr4['contents'] = $arr3;
-                        array_push($arr5,$arr4);
-
-                        //unset($arr2);
-                        $arr3 = array();
-                        //unset($arr4);
-                        $id = $row['id'];
-                        $arr2['id'] = $row['id'];
-                        $arr2['nickname'] = $row['nickname'];
-                        $arr2['cellphone'] = $row['cellphone'];
-                        $arr2['email'] = $row['email'];
-                        $arr2['sex'] = $row['sex'];
-                        $arr2['birthday'] = $row['birthday'];
-                        $arr2['horoscope'] = $row['horoscope'];
-                        $arr2['status'] = $row['status'];
-                        $arr2['type'] = $row['type'];
-                        // $arr2['score'] = $row['score'];
-                        $arr2['avatar_url'] = $row['avatar_url'];
-                        $arr2['allow_notice'] = $row['allow_notice'];
-                     //   $arr2['allow_score'] = $row['allow_score'];
-
-                        $temp['id'] = $row['impress_id'];
-                        $temp['content'] = $row['impresscontent'];
-                        array_push($arr3,$temp);
-                    }
-                    else
-                    {
-                        $temp['id'] = $row['impress_id'];
-                        $temp['content'] = $row['impresscontent'];
-                        array_push($arr3, $temp);
-                    }
-                }
-            }
-            $arr4['account'] = $arr2;
-            $arr4['contents'] = $arr3;
-            array_push($arr5,$arr4);
-
-            $arr1['impress_details'] = $arr5;
+            $arr=$this->Impress_model->get_impress_details($target_id);
+            $arr_user['friendinfo']=$arr;
             $callback['status'] = 'ok';
-            $callback['response'] = $arr1;
+            $callback['response'] =$arr_user;
             echo json_encode($callback);
             return;
         }
@@ -561,15 +375,29 @@ class Impress extends CI_Controller
             echo(json_encode($callback));
             return;
         }
+
+        //判断操作者是否为当前用户添加过亲友的印象
+        if ($impress_type == '1') 
+        {
+            # code...
+            if ($this->Impress_model->is_add_relation($operator_id,$target_id)) 
+            {
+                # code...
+                $callback['status'] = 'fail';
+                $callback['response'] = array('code'=>'1500','message'=>'you have added relation impress for this user');
+                echo(json_encode($callback));
+                return;
+             }
+
+        }
         $result=TRUE;
         for ($i=0; $i < $content_len; $i++) 
         { 
-            if($this->ImpressRelation_model->is_useradd_theimpress($operator_id,$target_id,$content[$i]['content']))
+            if($this->Impress_model->is_useradd_theimpress($operator_id,$target_id,$content[$i]['content']))
             {
                 continue;
             }
-            echo('hello');
-            // $this->ImpressRelation_model->insert_impress($operator_id,$target_id,$content)
+
             if ($this->Impresskeyword_model->is_impress_exist($target_id,$content[$i]['content'])) {
                 $this->Impresskeyword_model->update_impress_num($target_id,$content[$i]['content'],1);
             }

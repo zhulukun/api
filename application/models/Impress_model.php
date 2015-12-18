@@ -107,82 +107,6 @@ class Impress_model extends CI_Model {
 
 
     /**
-     * obtain user's impress details
-     *
-     * @param $target_id ,$page,$page_size
-     * @return array
-     */
-    function get_impress_details($target_id,$page,$page_size)
-    {        
-        
-        $m = ($page - 1) * $page_size;
-        $n = $page_size;
-
-        $query = $this->db->query("SELECT xl_account.id as id, nickname, cellphone,IFNULL(email,'') AS email, IFNULL(sex,'') AS sex, IFNULL(horoscope,'') AS horoscope, IFNULL(birthday,'') AS birthday,status,type, allow_notice, allow_score, xl_impress.id as impress_id, impresscontent 
-                                   FROM xl_account, xl_impress
-                                   WHERE xl_impress.operator_id = xl_account.id AND xl_impress.target_id = '{$target_id}' 
-                                   LIMIT {$m},{$n}");
-
-        $arr = array();
-
-        foreach($query->result_array() as $row)
-        {
-            array_push($arr,$row);
-        }
-
-        $query_id = array_column($arr,'id');   //获取所有account_id
-        $query_id = array_unique($query_id);   //account_id去重
-        
-        $arr2 = array();
-        foreach ($query_id as $key => $value) 
-        {
-            $temp['id'] = $value;
-            //查询分数score
-            $query1 = $this->db->query("SELECT AVG(score) as score from xl_score GROUP BY target_id HAVING target_id='{$value}'");
-            $re = $query1->row_array();
-
-            if(!isset($re))
-            {
-                $temp['score'] = 0;                           
-            }
-            else
-            {
-                $score_arr=row_array();
-                $temp['score'] = $query1->$score_arr['score'];
-            }
-
-            //查询头像路径avatar
-            $query2 = $this->db->query("SELECT avatar_url from xl_avatar WHERE account_id='{$value}'");
-            $re = $query2->row_array();
-
-            if(!isset($re))
-            {
-                $temp['avatar_url'] = '';                
-            }
-            else
-            {
-                $temp['avatar_url'] = $re['avatar_url'];
-            }
-            array_push($arr2, $temp);
-        }
-
-        //将两组结果arr和arr1按id合并
-        foreach ($arr as &$row) 
-        {
-            foreach ($arr2 as $row1) {
-                if($row1['id'] == $row['id'])
-                {
-                    $row['avatar_url'] = $row1['avatar_url'];
-                    $row['score'] = $row1['score'];
-                    break;
-                }
-            }
-        }
-        unset($row);
-        return $arr;
-    }
-
-    /**
      * add user's impress
      *
      * @param $impress_arr
@@ -234,6 +158,93 @@ class Impress_model extends CI_Model {
         return $arr;
     }
     
+    //判断操作者是否为当前用户添加过这个印象
+    function is_useradd_theimpress($operator_id,$target_id,$impresscontent)
+        {
+            $query=$this->db->query("SELECT * FROM xl_impress WHERE operator_id='{$operator_id}' AND target_id='{$target_id}' AND impresscontent='{$impresscontent}'");
+            if ($query->num_rows()>0) {
+                return TRUE;
+            }
+            return FALSE;
+        }
+
+    //判断操作者是否为当前用户添加过亲友印象
+    function is_add_relation($operator_id,$target_id)
+    {
+        $query=$this->db->query("SELECT * FROM xl_impress WHERE operator_id='{$operator_id}' AND target_id='{$target_id}' AND impresstype=1");
+        if ($query->num_rows()>0) {
+            # code...
+            return TRUE;
+        }
+        return FALSE;
+    }
+
+    function get_impress_details($target_id)
+    {
+        $query=$this->db->query("SELECT distinct operator_id from xl_impress where target_id='{$target_id}'");
+        $details_arr=array();
+        $arr = array();
+        foreach($query->result_array() as $row)
+        {
+            array_push($arr,$row);
+        }
+        for ($i=0; $i < count($arr); $i++) { 
+            $operator_id=$arr[$i]['operator_id'];
+            $query_impress=$this->db->query("SELECT impresscontent,impresstype FROM xl_impress WHERE target_id='{$target_id}' AND operator_id='{$operator_id}'");
+            $impress_arr = array();
+            foreach($query_impress->result_array() as $row)
+            {
+                array_push($impress_arr,$row);
+            }
+            $user_impress['impress']=$impress_arr;
+
+            $query_avatar_url=$this->db->query("SELECT avatar_url AS avatar_url FROM xl_avatar WHERE account_id='{$operator_id}'");
+
+            $query_account_info=$this->db->query("SELECT id,nickname,cellphone,sex,birthday,horoscope,status,register_user,type FROM xl_account WHERE id='{$operator_id}'");
+
+            $arr_info = array();
+
+            foreach($query_account_info->result_array() as $row)
+            {
+                    array_push($arr_info,$row);
+            }
+
+            $user_info=array();
+
+           if (count($arr_info)>0) 
+             {
+          
+                $user_info=$arr_info[0];
+             }
+
+            
+         
+            if ($query_avatar_url->num_rows()>0) 
+            {
+                $arr_avatar = array();
+
+                foreach($query_avatar->result_array() as $row)
+                {
+                      array_push($arr_score,$row);
+                }
+
+                $user_avatar=$arr_avatar[0];
+
+           }
+
+            else
+             {
+                $user_avatar=array('avatar_url' => '', );
+
+             }
+
+         $user_info=array_merge($user_info, $user_avatar);
+         $user_info=array_merge($user_info,$user_impress);
+         $details_arr[$i]=$user_info;
+
+        }
+        return $details_arr;
+    }
 
 
 }
