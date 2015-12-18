@@ -564,11 +564,12 @@ class Impress extends CI_Controller
         $result=TRUE;
         for ($i=0; $i < $content_len; $i++) 
         { 
-            // if($this->ImpressRelation_model->is_useradd_theimpress($))
-            // {
-            //     continue;
-            // }
-
+            if($this->ImpressRelation_model->is_useradd_theimpress($operator_id,$target_id,$content[$i]['content']))
+            {
+                continue;
+            }
+            echo('hello');
+            // $this->ImpressRelation_model->insert_impress($operator_id,$target_id,$content)
             if ($this->Impresskeyword_model->is_impress_exist($target_id,$content[$i]['content'])) {
                 $this->Impresskeyword_model->update_impress_num($target_id,$content[$i]['content'],1);
             }
@@ -615,19 +616,7 @@ class Impress extends CI_Controller
     
     public function get_preset_impress()
     {
-        $json=file_get_contents("php://input");
-        if(is_null(json_decode($json)))
-            {
-                $callback=array(
-                        'code' => '1300',
-                        'msg' => 'json data invalid'
-                    );
-
-                echo(json_encode($callback));
-                return;
-            }
-
-        $de_json = (array)json_decode($json,TRUE);
+        
 
         $result = $this->Impress_model->get_preset_impresses();
 
