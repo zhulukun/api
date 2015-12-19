@@ -361,7 +361,7 @@ CREATE TABLE `xl_impress` (
 
 LOCK TABLES `xl_impress` WRITE;
 /*!40000 ALTER TABLE `xl_impress` DISABLE KEYS */;
-INSERT INTO `xl_impress` VALUES ('018ea74c7dce7656837eecaba79c83b2','16f7d31850c1697d372c60998e21a22f','f3bec40b5549d7744d33f441be8eafae',3,'2222',1,0),('01b1a6b69c6962a2c75b68b8865d8bd8','ffe2f9de6e0aade7e335d81be201044a','f3bec40b5549d7744d33f441be8eafae',2,'hello',1,0),('01f897b52a7c82371fd43437ebe64508','ffe2f9de6e0aade7e335d81be201044a','85f56c5a792260b902cd83628ba0973d',1,'hello1',1,0),('06f91d7de57a95127a9e241c89b4f6d2','ffe2f9de6e0aade7e335d81be201044a','85f56c5a792260b902cd83628ba0973d',1,'hello',1,0),('07df479b3d4f9b5d5974c31cf3bae482','16f7d31850c1697d372c60998e21a22f','f3bec40b5549d7744d33f441be8eafae',3,'2222',1,0),('0ea35c50e8980326d5ab6c36638a7222','16f7d31850c1697d372c60998e21a22f','f3bec40b5549d7744d33f441be8eafae',1,'2222',1,0),('10f84f7207eaa8da65209cb88b7b2805','ffe2f9de6e0aade7e335d81be201044a','85f56c5a792260b902cd83628ba0973d',1,'hello1',1,0),('1340df7f5a84f75d20506e0b41daf47c','ffe2f9de6e0aade7e335d81be201044a','85f56c5a792260b902cd83628ba0973d',1,'hello',1,0),('18a54792d9f0bbf1e526554995bc7af6','ffe2f9de6e0aade7e335d81be201044a','f3bec40b5549d7744d33f441be8eafae',3,'333',1,0),('1a9dfab99f08a988588666fb19b418ef','ffe2f9de6e0aade7e335d81be201044a','f3bec40b5549d7744d33f441be8eafae',1,'hello',1,0),('1dc4c8b6339263eb80aa382946510382','16f7d31850c1697d372c60998e21a22f','f3bec40b5549d7744d33f441be8eafae',2,'2222',1,0),('207cc7eb3d0c0514b66494ecfe2bd51d','ffe2f9de6e0aade7e335d81be201044a','f3bec40b5549d7744d33f441be8eafae',1,'hello',1,0),('2228a58b561a0354cb3f5c8f9ceeda4e','16f7d31850c1697d372c60998e21a22f','f3bec40b5549d7744d33f441be8eafae',1,'22112',1,0),('2508dc6c81934ff1d6c2c03c7b9167f5','ffe2f9de6e0aade7e335d81be201044a','f3bec40b5549d7744d33f441be8eafae',1,'hello2',1,0),('255bd9d302b03d253c3a7709884ed4c5','16f7d31850c1697d372c60998e21a22f','f3bec40b5549d7744d33f441be8eafae',1,'1122221',1,0),('26f79f55cccf41028271efadc2cc0f01','16f7d31850c1697d372c60998e21a22f','f3bec40b5549d7744d33f441be8eafae',2,'2222',1,0),('2bc8710f3de30945f3d05dca9910bc78','ffe2f9de6e0aade7e335d81be201044a','85f56c5a792260b902cd83628ba0973d',1,'hello1',1,0),('30ee07a673406bec1d8eb3cd3f852f9e','16f7d31850c1697d372c60998e21a22f','f3bec40b5549d7744d33f441be8eafae',3,'11222321',1,0),('3ec79fb2c24b3e3eef1e60d06240a7d2','ffe2f9de6e0aade7e335d81be201044a','f3bec40b5549d7744d33f441be8eafae',1,'hello4',1,0),('407d7255124ad6df8e719d637fc1b734','16f7d31850c1697d372c60998e21a22f','f3bec40b5549d7744d33f441be8eafae',3,'11222321',1,1),('47aae5e3454059a959079d1839ec82da','ffe2f9de6e0aade7e335d81be201044a','85f56c5a792260b902cd83628ba0973d',1,'hello1',1,0),('495273f05720aa252a9af1e9fc6568af','ffe2f9de6e0aade7e335d81be201044a','f3bec40b5549d7744d33f441be8eafae',2,'2222',1,0),('4b2052855bbde34dd5fedda8c7090ad7','16f7d31850c1697d372c60998e21a22f','f3bec40b5549d7744d33f441be8eafae',2,'22112232',1,0),('4b382b561cac1e32f41d052caf1557f9','ffe2f9de6e0aade7e335d81be201044a','f3bec40b5549d7744d33f441be8eafae',2,'hello5',1,0),('4cde5b708a7fb231db13f4806adc5a2f','16f7d31850c1697d372c60998e21a22f','f3bec40b5549d7744d33f441be8eafae',3,'2222',1,0),('526286f68aa9551d40020742f9b29f47','ffe2f9de6e0aade7e335d81be201044a','f3bec40b5549d7744d33f441be8eafae',1,'hello1',1,0),('52f7f1d21c641f09ebeb95a17d901387','16f7d31850c1697d372c60998e21a22f','f3bec40b5549d7744d33f441be8eafae',1,'2222',1,0),('5344ae1b04807a2fa433418462e06d74','16f7d31850c1697d372c60998e21a22f','f3bec40b5549d7744d33f441be8eafae',2,'2222',1,0),('59c17c46cdf88a2d2ad4f3e96f6837ef','ffe2f9de6e0aade7e335d81be201044a','85f56c5a792260b902cd83628ba0973d',1,'hello1',1,0),('5b71da2167ee909895f01cf502e5e395','ffe2f9de6e0aade7e335d81be201044a','f3bec40b5549d7744d33f441be8eafae',1,'hello',1,0),('5bf3872333d4b1b03e36864a07c5efc4','16f7d31850c1697d372c60998e21a22f','f3bec40b5549d7744d33f441be8eafae',3,'22221',1,0),('5de9a131e7649491de264f23c7cbb84c','16f7d31850c1697d372c60998e21a22f','f3bec40b5549d7744d33f441be8eafae',1,'2222',1,0),('6124906e94ce8f41c2cb06b51d8e0bab','ffe2f9de6e0aade7e335d81be201044a','85f56c5a792260b902cd83628ba0973d',1,'hello',1,0),('63956215be12e8994af82e4b1231aa09','ffe2f9de6e0aade7e335d81be201044a','f3bec40b5549d7744d33f441be8eafae',1,'hello2',1,0),('731565e4bb8f3b640357cc5f9cdab8a7','ffe2f9de6e0aade7e335d81be201044a','85f56c5a792260b902cd83628ba0973d',1,'hello1',1,0),('74c5385d3f049811065d8eaac123660f','ffe2f9de6e0aade7e335d81be201044a','f3bec40b5549d7744d33f441be8eafae',2,'hello',1,0),('814de3fe703eeed393b8b473f171d028','ffe2f9de6e0aade7e335d81be201044a','85f56c5a792260b902cd83628ba0973d',1,'hello1',1,0),('83b5094fc913a3e3e2b92a52c310d71a','ffe2f9de6e0aade7e335d81be201044a','f3bec40b5549d7744d33f441be8eafae',1,'hello',1,0),('8e8d980ca3d595516eab001392c45712','ffe2f9de6e0aade7e335d81be201044a','f3bec40b5549d7744d33f441be8eafae',1,'hello1',1,0),('924dae07f62bae1ac24129d418f6d26c','ffe2f9de6e0aade7e335d81be201044a','f3bec40b5549d7744d33f441be8eafae',1,'hello5',1,0),('93417b0563b678d182b11274d5da4132','ffe2f9de6e0aade7e335d81be201044a','85f56c5a792260b902cd83628ba0973d',1,'hello',1,0),('9e2a2a9cfa0cc5b7f5eedc743c85bb11','ffe2f9de6e0aade7e335d81be201044a','85f56c5a792260b902cd83628ba0973d',1,'hello',1,0),('a2a0da48ac1307df66bc46ebf9246a73','16f7d31850c1697d372c60998e21a22f','f3bec40b5549d7744d33f441be8eafae',2,'2222',1,0),('a6088ae498599cff257245342aceac8c','ffe2f9de6e0aade7e335d81be201044a','f3bec40b5549d7744d33f441be8eafae',1,'hello',1,0),('a6bcd156cff7d6bbd927f2f18e460e7b','ffe2f9de6e0aade7e335d81be201044a','85f56c5a792260b902cd83628ba0973d',1,'hello1',1,0),('aac2f4675752f19742a46e626a879771','ffe2f9de6e0aade7e335d81be201044a','f3bec40b5549d7744d33f441be8eafae',2,'2222',1,0),('b0a40a42bceef2a1d6982cfa78960b23','ffe2f9de6e0aade7e335d81be201044a','85f56c5a792260b902cd83628ba0973d',1,'hello',1,0),('b36386c923b6392a4c6e24f891e20b89','ffe2f9de6e0aade7e335d81be201044a','85f56c5a792260b902cd83628ba0973d',1,'hello1',1,0),('b54816c45ba6f57f60f7ec50dfb2440a','ffe2f9de6e0aade7e335d81be201044a','f3bec40b5549d7744d33f441be8eafae',1,'hello9',1,0),('b8bb36b4d8f516220ffafc69d7c83917','16f7d31850c1697d372c60998e21a22f','f3bec40b5549d7744d33f441be8eafae',3,'221132',1,0),('b9d6c81c5b3478350bbe0b99cebc8aba','16f7d31850c1697d372c60998e21a22f','f3bec40b5549d7744d33f441be8eafae',2,'2222',1,0),('ba9a93c49477e7305ea35908bb782605','16f7d31850c1697d372c60998e21a22f','f3bec40b5549d7744d33f441be8eafae',2,'2222',1,0),('c0a4ce031e68da93a49c135ff21acec9','16f7d31850c1697d372c60998e21a22f','f3bec40b5549d7744d33f441be8eafae',2,'2222',1,0),('c1cd0167d69cf6b27e61a09d3e64232f','16f7d31850c1697d372c60998e21a22f','f3bec40b5549d7744d33f441be8eafae',3,'221132',1,1),('c65246d4b2012da981f86233b73b3db5','16f7d31850c1697d372c60998e21a22f','f3bec40b5549d7744d33f441be8eafae',3,'2222',1,0),('cc9fc66d6a4b45f4cb7db2978b44f106','ffe2f9de6e0aade7e335d81be201044a','f3bec40b5549d7744d33f441be8eafae',1,'hello',1,0),('cfa7a80cac6a18f6492daafc4be81cdd','16f7d31850c1697d372c60998e21a22f','f3bec40b5549d7744d33f441be8eafae',1,'2222',1,0),('d13b7b72892316484fd9da9d28ac4969','ffe2f9de6e0aade7e335d81be201044a','f3bec40b5549d7744d33f441be8eafae',2,'hello5',1,0),('ddbbd7ae564ac664a24a50fc0e865bfc','ffe2f9de6e0aade7e335d81be201044a','f3bec40b5549d7744d33f441be8eafae',1,'hello',1,0),('dfdd3c3a145d4b9577be0f3d37869800','ffe2f9de6e0aade7e335d81be201044a','85f56c5a792260b902cd83628ba0973d',1,'hello',1,0),('e53b46a6444c0bf31e48800efa9a8ead','16f7d31850c1697d372c60998e21a22f','f3bec40b5549d7744d33f441be8eafae',2,'1122232221',1,0),('e7504614b24617f6773ad4222ae30a4d','ffe2f9de6e0aade7e335d81be201044a','f3bec40b5549d7744d33f441be8eafae',3,'333',1,0),('ea45fef79eec201ae725e5c54d75d61e','16f7d31850c1697d372c60998e21a22f','f3bec40b5549d7744d33f441be8eafae',2,'2222',1,0),('ef7108fc7b8de46b5d8e6f73c4f3dda4','ffe2f9de6e0aade7e335d81be201044a','85f56c5a792260b902cd83628ba0973d',1,'hello',1,0),('f12fe1c00b025d7acd3201d0ee2b48fa','ffe2f9de6e0aade7e335d81be201044a','f3bec40b5549d7744d33f441be8eafae',1,'hello',1,0),('f61f5821fe854fab52b048dc15c299af','ffe2f9de6e0aade7e335d81be201044a','f3bec40b5549d7744d33f441be8eafae',1,'hello2',1,0),('f8239c8727c8982fb0eaccccac998f65','ffe2f9de6e0aade7e335d81be201044a','85f56c5a792260b902cd83628ba0973d',1,'hello',1,0),('fdc115b31be684d568b7694e8947a169','16f7d31850c1697d372c60998e21a22f','f3bec40b5549d7744d33f441be8eafae',3,'2222',1,0);
+INSERT INTO `xl_impress` VALUES ('24191c0eb42e8271e1af3b0df6e4a48c','f76cdd92a8ae0dbc23fe8dcb0989acce','f3bec40b5549d7744d33f441be8eafae',3,'骑行',1,0),('361ee53c35a87175244b4a0b0c1e8192','f76cdd92a8ae0dbc23fe8dcb0989acce','f3bec40b5549d7744d33f441be8eafae',3,'篮球',1,0),('6ff49449fef0cf2022bd01312fd65270','f76cdd92a8ae0dbc23fe8dcb0989acce','f3bec40b5549d7744d33f441be8eafae',2,'潇洒',1,0),('79e707eccdf9c74f7bf7009aae31d278','f76cdd92a8ae0dbc23fe8dcb0989acce','2da75864818c9108e70eaa500eae0272',3,'骑行',1,0),('89bec3950501c02a416fe355f0f8abe7','f76cdd92a8ae0dbc23fe8dcb0989acce','2da75864818c9108e70eaa500eae0272',3,'篮球',1,0),('aa61d75e1b978b459e9ad4eb84ec6fce','f76cdd92a8ae0dbc23fe8dcb0989acce','f3bec40b5549d7744d33f441be8eafae',2,'帅气',1,0),('ecf8dc0b93cbd5b80930f42ece04ccd0','f76cdd92a8ae0dbc23fe8dcb0989acce','f3bec40b5549d7744d33f441be8eafae',1,'表哥',1,0);
 /*!40000 ALTER TABLE `xl_impress` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -384,7 +384,7 @@ CREATE TABLE `xl_impress_keyword` (
   KEY `xl_impress_keyword_ibfk_2` (`target_id`),
   CONSTRAINT `xl_impress_keyword_ibfk_112` FOREIGN KEY (`impresstype`) REFERENCES `xl_impresstype` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `xl_impress_keyword_ibfk_2` FOREIGN KEY (`target_id`) REFERENCES `xl_account` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -393,7 +393,7 @@ CREATE TABLE `xl_impress_keyword` (
 
 LOCK TABLES `xl_impress_keyword` WRITE;
 /*!40000 ALTER TABLE `xl_impress_keyword` DISABLE KEYS */;
-INSERT INTO `xl_impress_keyword` VALUES (2,'ffe2f9de6e0aade7e335d81be201044a','hello',8,1,1),(3,'ffe2f9de6e0aade7e335d81be201044a','hello2',2,1,1),(4,'ffe2f9de6e0aade7e335d81be201044a','hello1',1,1,1),(5,'ffe2f9de6e0aade7e335d81be201044a','hello4',1,1,1),(6,'ffe2f9de6e0aade7e335d81be201044a','hello5',3,1,1),(7,'ffe2f9de6e0aade7e335d81be201044a','hello9',1,1,1),(8,'ffe2f9de6e0aade7e335d81be201044a','2222',2,1,2),(9,'ffe2f9de6e0aade7e335d81be201044a','333',2,1,3),(10,'16f7d31850c1697d372c60998e21a22f','2222',17,1,2),(11,'16f7d31850c1697d372c60998e21a22f','22221',1,1,3),(12,'16f7d31850c1697d372c60998e21a22f','22112',1,1,1),(13,'16f7d31850c1697d372c60998e21a22f','1122221',1,1,1),(14,'16f7d31850c1697d372c60998e21a22f','221132',2,1,3),(15,'16f7d31850c1697d372c60998e21a22f','11222321',2,1,3),(16,'16f7d31850c1697d372c60998e21a22f','22112232',1,1,2),(17,'16f7d31850c1697d372c60998e21a22f','1122232221',1,1,2);
+INSERT INTO `xl_impress_keyword` VALUES (19,'f76cdd92a8ae0dbc23fe8dcb0989acce','表哥',1,1,1),(20,'f76cdd92a8ae0dbc23fe8dcb0989acce','帅气',1,1,2),(21,'f76cdd92a8ae0dbc23fe8dcb0989acce','潇洒',1,1,2),(22,'f76cdd92a8ae0dbc23fe8dcb0989acce','篮球',2,1,3),(23,'f76cdd92a8ae0dbc23fe8dcb0989acce','骑行',2,1,3);
 /*!40000 ALTER TABLE `xl_impress_keyword` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -408,7 +408,7 @@ CREATE TABLE `xl_impresstype` (
   `id` int(8) NOT NULL AUTO_INCREMENT,
   `impress_type` varchar(32) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -417,7 +417,7 @@ CREATE TABLE `xl_impresstype` (
 
 LOCK TABLES `xl_impresstype` WRITE;
 /*!40000 ALTER TABLE `xl_impresstype` DISABLE KEYS */;
-INSERT INTO `xl_impresstype` VALUES (1,'relation'),(2,'character'),(3,'like');
+INSERT INTO `xl_impresstype` VALUES (1,'relation'),(2,'character'),(3,'like'),(4,'useradd');
 /*!40000 ALTER TABLE `xl_impresstype` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -458,8 +458,10 @@ DROP TABLE IF EXISTS `xl_presetimpress`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `xl_presetimpress` (
-  `id` varchar(64) NOT NULL,
+  `id` int(16) NOT NULL AUTO_INCREMENT,
   `preset_impress` varchar(128) NOT NULL,
+  `impresstype` int(8) NOT NULL,
+  CONSTRAINT `xl_presetimpress_ibfk_112` FOREIGN KEY (`impresstype`) REFERENCES `xl_impresstype` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -537,27 +539,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-12-18 14:34:56
-
-
-DROP TABLE IF EXISTS `xl_impress_relation`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `xl_impress_relation` (
-  `id` int(16) not null PRIMARY KEY AUTO_INCREMENT,
-  `operator_id` varchar(64) NOT NULL,
-  `target_id` varchar(64) NOT NULL,
-  `impresscontent` varchar(128) NOT NULL,
-  CONSTRAINT `xl_impress_relation_ibfk_1` FOREIGN KEY (`target_id`) REFERENCES `xl_account` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `xl_impress_relation_ibfk_2` FOREIGN KEY (`operator_id`) REFERENCES `xl_account` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `xl_systemkeywords`
---
-
-LOCK TABLES `xl_impress_relation` WRITE;
-
-UNLOCK TABLES;
+-- Dump completed on 2015-12-19  9:31:11

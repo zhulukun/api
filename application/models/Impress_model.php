@@ -39,14 +39,21 @@ class Impress_model extends CI_Model {
      */
     function get_impress($target_id)
     {
-        $query = $this->db->query("SELECT impress_keyword,impress_num,isview,impresstype FROM xl_impress_keyword WHERE target_id ='{$target_id}' AND isview=1 ORDER BY impress_num DESC LIMIT 0,5");
+        $query1 = $this->db->query("SELECT impress_keyword,impress_num,isview,impresstype FROM xl_impress_keyword WHERE target_id ='{$target_id}' AND isview=1 AND (impresstype=2 OR impresstype=3 OR impresstype=4 ) ORDER BY impress_num DESC LIMIT 0,4");
+        $query2 = $this->db->query("SELECT impress_keyword,impress_num,isview,impresstype FROM xl_impress_keyword WHERE target_id ='{$target_id}' AND isview=1 AND impresstype=1 ORDER BY impress_num DESC LIMIT 0,1");
+        $arr1 = array();
 
-        $arr = array();
-
-        foreach($query->result_array() as $row)
+        foreach($query1->result_array() as $row)
         {
-            array_push($arr,$row);
+            array_push($arr1,$row);
         }
+        $arr2 = array();
+
+        foreach($query2->result_array() as $row)
+        {
+            array_push($arr2,$row);
+        }
+        $arr=array_merge($arr2,$arr1);
         return $arr;
     }
 
@@ -245,6 +252,56 @@ class Impress_model extends CI_Model {
         }
         return $details_arr;
     }
+
+    //统计xl_presetimpress表里的预设影响数目
+    function count_preset_impresses()
+    {
+         $query = $this->db->query("SELECT * FROM xl_presetimpress");
+
+        return $query->num_rows();   
+    }
+
+    //获取好友关系的预设印象
+    function get_preset_impress_relation()
+    {
+         $query = $this->db->query("SELECT preset_impress FROM xl_presetimpress WHERE impresstype=1");
+
+        $arr = array();
+
+        foreach($query->result_array() as $row)
+        {
+            array_push($arr,$row);
+        }
+        return $arr;
+    }
+
+    function get_preset_impress_character()
+    {
+         $query = $this->db->query("SELECT preset_impress FROM xl_presetimpress WHERE impresstype=2");
+
+        $arr = array();
+
+        foreach($query->result_array() as $row)
+        {
+            array_push($arr,$row);
+        }
+        return $arr;   
+    }
+
+    function get_preset_impress_like()
+    {
+        $query = $this->db->query("SELECT preset_impress FROM xl_presetimpress WHERE impresstype=3");
+
+        $arr = array();
+
+        foreach($query->result_array() as $row)
+        {
+            array_push($arr,$row);
+        }
+        return $arr;
+    }
+
+
 
 
 }

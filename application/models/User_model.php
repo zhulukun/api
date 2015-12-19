@@ -219,25 +219,6 @@
 
         $user_info=$arr[0];
          
-
-
-         // if ($query_avg_score->num_rows()>0) {
-            
-         //    $arr_score = array();
-
-         //    foreach($query_avg_score->result_array() as $row)
-         //    {
-         //          array_push($arr_score,$row);
-         //    }
-
-         //    $score=number_format($arr_score[0]['score'], 2, '.', '');
-         //    $user_score=array('score' => $score );
-         // }
-         // else
-         // {
-         //    $user_score=array('score' => '无', );
-         // }
-
          if ($query_avatar_url->num_rows()>0) 
          {
             $arr_avatar = array();

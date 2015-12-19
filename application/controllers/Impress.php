@@ -21,9 +21,9 @@ class Impress extends CI_Controller
         $this->load->library('session');
                
 
-    }
+    }    
     /**
-     * 获取用户按印象数排名前五的印象
+     * 获取用户按印象数排名前五的印象 第一个是好友关系的印象
      */
     public function get_topfive_impresses()
     {
@@ -446,20 +446,51 @@ class Impress extends CI_Controller
     {
         
 
-        $result = $this->Impress_model->get_preset_impresses();
-
-        $arr1 = array();
-        foreach($result as $row)
+        $count = $this->Impress_model->count_preset_impresses();
+        if($count == 0)  //查询不到任何印象
         {
-            $temp['id'] = $row['id'];
-            $temp['content'] = $row['preset_impress'];
-            array_push($arr1,$temp);
+            //错误处理
+            $callback['status'] = 'fail';
+            $callback['response'] = array('code'=>'1500','message'=>'no preset impress');
+            echo json_encode($callback);
+            return;
         }
-        $callback['status'] = 'ok';
+        else
+        {
+            $temp1 = array();
+            $temp2 = array();
+            $temp3 = array();
+            $arr1 = $this->Impress_model->get_preset_impress_relation();
+            $arr2 = $this->Impress_model->get_preset_impress_character();
+            $arr3 = $this->Impress_model->get_preset_impress_like();
 
-        $arr2['preset_impresses'] = $arr1;
-        $callback['response'] = $arr2;
-        echo json_encode($callback);
+            for ($i=0; $i < count($arr1); $i++)  
+            {
+                $temp1[$i]['content'] = $arr1[$i]['preset_impress'];
+
+            }
+
+            for ($i=0; $i < count($arr2); $i++)  
+            {
+                $temp2[$i]['content'] = $arr2[$i]['preset_impress'];
+               
+            }
+            for ($i=0; $i < count($arr3); $i++)  
+            {
+                $temp3[$i]['content'] = $arr3[$i]['preset_impress'];
+                
+            }
+
+            $callback['status'] = 'ok';
+            $callback['response'] = array(
+                            'relation' => $temp1,
+                            'character' =>$temp2,
+                            'like' => $temp3
+                );
+            echo json_encode($callback);
+            return;
+        }
+        
     }
 
     /**
@@ -541,6 +572,9 @@ class Impress extends CI_Controller
     {
         return ;
     }
+
+
+
 
 
 }
