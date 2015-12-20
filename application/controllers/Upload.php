@@ -99,6 +99,7 @@ class Upload extends CI_Controller {
                 echo(json_encode($callback));
                 return;
             }
+            
             $callback['status']='fail';
             $callback['response']=array(
                     'code' => '1500',
