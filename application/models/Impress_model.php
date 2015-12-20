@@ -112,6 +112,19 @@ class Impress_model extends CI_Model {
         return $arr;
     }
 
+    function get_impress_useradd($target_id)
+    {
+        $query = $this->db->query("SELECT impress_keyword,impress_num,isview,impresstype FROM xl_impress_keyword WHERE target_id ='{$target_id}' AND impresstype=4 ORDER BY impress_num DESC");
+
+        $arr = array();
+
+        foreach($query->result_array() as $row)
+        {
+            array_push($arr,$row);
+        }
+        return $arr;
+    }
+
 
     /**
      * add user's impress
@@ -300,8 +313,5 @@ class Impress_model extends CI_Model {
         }
         return $arr;
     }
-
-
-
 
 }

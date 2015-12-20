@@ -176,9 +176,11 @@ class Impress extends CI_Controller
             $temp1 = array();
             $temp2 = array();
             $temp3 = array();
+            $temp4 = array();
             $arr1 = $this->Impress_model->get_impress_relation($target_id);
             $arr2 = $this->Impress_model->get_impress_character($target_id);
             $arr3 = $this->Impress_model->get_impress_like($target_id);
+            $arr4 = $this->Impress_model->get_impress_useradd($target_id);
 
             for ($i=0; $i < count($arr1); $i++)  
             {
@@ -199,12 +201,19 @@ class Impress extends CI_Controller
                 $temp3[$i]['count'] = $arr3[$i]['impress_num'];
                 $temp3[$i]['isview'] = $arr3[$i]['isview'];
             }
+            for ($i=0; $i < count($arr4); $i++)  
+            {
+                $temp4[$i]['content'] = $arr4[$i]['impress_keyword'];
+                $temp4[$i]['count'] = $arr4[$i]['impress_num'];
+                $temp4[$i]['isview'] = $arr4[$i]['isview'];
+            }
 
             $callback['status'] = 'ok';
             $callback['response'] = array(
                             'relation' => $temp1,
                             'character' =>$temp2,
-                            'like' => $temp3
+                            'like' => $temp3,
+                            'useradd' => $temp4
                 );
             echo json_encode($callback);
             return;
@@ -498,57 +507,9 @@ class Impress extends CI_Controller
      */
     public function get_system_keywords()
     {
-    $json=file_get_contents("php://input");
-        if(is_null(json_decode($json)))
-            {
-                $callback=array(
-                        'code' => '1300',
-                        'msg' => 'json data invalid'
-                    );
-
-                echo(json_encode($callback));
-                return;
-            }
+        $json=file_get_contents("php://input");
 
         $de_json = (array)json_decode($json,TRUE);
-
-        if (!array_key_exists('token', $de_json)) 
-        {
-            $callback=array(
-                        'code' => '1100',
-                        'msg' => 'token do not exist'
-                    );
-
-            echo(json_encode($callback));
-            return;
-        }
-
-       
-        $token=$de_json['token'];
-
-        if (isset($_SESSION['token'])) 
-        {
-            if ($token !== $_SESSION['token']) 
-            {
-                $callback=array(
-                            'code' => '1000',
-                            'msg' => ' Authentication error'
-                        );
-
-                echo(json_encode($callback));
-                return;
-            }
-        }
-        else
-        {
-            $callback=array(
-                            'code' => '1200',
-                            'msg' => 'token is out of date'
-                        );
-
-                echo(json_encode($callback));
-                return;
-        }
 
         $result = $this->Impress_model->get_preset_keywords();
 
@@ -570,7 +531,52 @@ class Impress extends CI_Controller
 
     public function set_impress_hidden()
     {
-        return ;
+        $json=file_get_contents("php://input");
+        if(is_null(json_decode($json)))
+            {
+                $callback=array(
+                        'code' => '1300',
+                        'message' => 'json data invalid'
+                    );
+
+                echo(json_encode($callback));
+                return;
+            }
+
+        $de_json = (array)json_decode($json,TRUE);
+
+    
+        if (!array_key_exists('account_id', $de_json) ||!array_key_exists('content', $de_json)) 
+            {
+                $callback['status']='fail';
+                $callback['response']=array(
+                            'code' => '1400',
+                            'message' => 'invalid params'
+                        );
+
+                echo(json_encode($callback));
+                return;
+            }   
+        $account_id=$de_json['account_id'];
+        $content=$de_json['content'];
+
+        if ($this->Impresskeyword_model->set_immpress_hidden($account_id,$content)) {
+             $callback['status'] = 'ok';
+            echo json_encode($callback);
+            return;
+        }
+
+         $callback['status'] = 'fail';
+         $callback['response'] = array(
+                            'code' => '1500',
+                            'message' => 'set hidden fail'
+                );
+        echo json_encode($callback);
+        return;
+
+
+
+
     }
 
 

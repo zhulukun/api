@@ -54,5 +54,16 @@
                 return FALSE;
             }
 
+            function set_immpress_hidden($target_id,$content)
+            {
+                $query=$this->db->query("UPDATE xl_impress_keyword SET isview=0 WHERE target_id='{$target_id}' AND impress_keyword='{$content}'");
+                if ($this->db->affected_rows()>0) {
+                    # code..
+                    return TRUE;
+                }
+
+                return FALSE;
+            }
+
 
     }

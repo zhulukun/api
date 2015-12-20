@@ -461,9 +461,10 @@ CREATE TABLE `xl_presetimpress` (
   `id` int(16) NOT NULL AUTO_INCREMENT,
   `preset_impress` varchar(128) NOT NULL,
   `impresstype` int(8) NOT NULL,
-  CONSTRAINT `xl_presetimpress_ibfk_112` FOREIGN KEY (`impresstype`) REFERENCES `xl_impresstype` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`id`),
+  KEY `xl_presetimpress_ibfk_112` (`impresstype`),
+  CONSTRAINT `xl_presetimpress_ibfk_112` FOREIGN KEY (`impresstype`) REFERENCES `xl_impresstype` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -472,7 +473,7 @@ CREATE TABLE `xl_presetimpress` (
 
 LOCK TABLES `xl_presetimpress` WRITE;
 /*!40000 ALTER TABLE `xl_presetimpress` DISABLE KEYS */;
-INSERT INTO `xl_presetimpress` VALUES ('aaa','dafda'),('aaad','dafda');
+INSERT INTO `xl_presetimpress` VALUES (1,'弟弟',1),(2,'老婆',1),(3,'儿子',1),(4,'老公',1),(5,'叔叔',1),(6,'表弟',1),(7,'妹妹',1),(8,'姐姐',1),(9,'开朗',2),(10,'大方',2),(11,'平易近人',2),(12,'篮球',3),(13,'游泳',3),(14,'健身',3),(15,'羽毛球',3),(16,'骑行',3);
 /*!40000 ALTER TABLE `xl_presetimpress` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -539,4 +540,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-12-19  9:31:11
+-- Dump completed on 2015-12-19 10:22:13
