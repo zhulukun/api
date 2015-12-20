@@ -93,13 +93,25 @@
 
                         $user_info=$arr[0];
 
-                         if ($query_avatar_url->num_rows()>0) 
+                         // if ($query_avatar_url->num_rows()>0) 
+                         // {
+                         //    $arr_avatar = array();
+
+                         //    foreach($query_avatar->result_array() as $row)
+                         //    {
+                         //          array_push($arr_score,$row);
+                         //    }
+
+                         //    $user_avatar=$arr_avatar[0];
+
+                         // }
+                        if ($query_avatar_url->num_rows()>0) 
                          {
                             $arr_avatar = array();
 
-                            foreach($query_avatar->result_array() as $row)
+                            foreach($query_avatar_url->result_array() as $row)
                             {
-                                  array_push($arr_score,$row);
+                                  array_push($arr_avatar,$row);
                             }
 
                             $user_avatar=$arr_avatar[0];
