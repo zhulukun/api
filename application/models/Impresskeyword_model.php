@@ -55,15 +55,43 @@
             }
 
             function set_impress_hidden($target_id,$content)
-            {
-                $query=$this->db->query("UPDATE xl_impress_keyword SET isview=0 WHERE target_id='{$target_id}' AND impress_keyword='{$content}'");
-                if ($this->db->affected_rows()>0) {
-                    # code..
-                    return TRUE;
+            {   
+                $arr=$this->get_isview_status($target_id,$content);
+                if (count($arr)>0) {
+                    $isview=$arr[0]['isview'];
+                }
+                //隐藏印象
+                if ($isview == '1') {
+                    $query=$this->db->query("UPDATE xl_impress_keyword SET isview=0 WHERE target_id='{$target_id}' AND impress_keyword='{$content}'");
+                    if ($this->db->affected_rows()>0) {
+                        # code..
+                        return TRUE;
+                    }
+                }
+                //显示印象
+                if ($isview == '0') {
+                    $query=$this->db->query("UPDATE xl_impress_keyword SET isview=1 WHERE target_id='{$target_id}' AND impress_keyword='{$content}'");
+                    if ($this->db->affected_rows()>0) {
+                        # code..
+                        return TRUE;
+                    }
                 }
 
                 return FALSE;
             }
 
+            //获取印象的isview状态
+            function get_isview_status($target_id,$content)
+            {
+                $query=$this->db->query("SELECT isview FROM xl_impress_keyword WHERE target_id='{$target_id}' AND impress_keyword='{$content}'");
+                 $arr = array();
+
+                foreach($query->result_array() as $row)
+                {
+                    array_push($arr,$row);
+                }
+                // print_r($arr);
+                return $arr;   
+           }
 
     }
