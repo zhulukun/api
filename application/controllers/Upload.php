@@ -32,8 +32,8 @@ class Upload extends CI_Controller {
         $config['upload_path']      = './uploads/';
         $config['allowed_types']    = 'gif|jpeg|png|jpg';
         $config['max_size']     = 1024;
-        $config['max_width']        = 1024;
-        $config['max_height']       = 768;
+        $config['max_width']        = 5000;
+        $config['max_height']       = 5000;
         $config['file_name'] =time().'_'.rand(0,1000);
         
         $this->load->library('upload', $config);
@@ -47,7 +47,7 @@ class Upload extends CI_Controller {
             $callback['status']='fail';
             $callback['response']=array(
                     'code' => '1500',
-                    'message' => $error                
+                    'message' => 'upload fail'                
                     );
             echo(json_encode($callback));
             return;
