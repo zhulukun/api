@@ -546,7 +546,7 @@ class Impress extends CI_Controller
         $de_json = (array)json_decode($json,TRUE);
 
     
-        if (!array_key_exists('account_id', $de_json) ||!array_key_exists('content', $de_json)) 
+        if (!array_key_exists('account_id', $de_json) ||!array_key_exists('impresscontent', $de_json)) 
             {
                 $callback['status']='fail';
                 $callback['response']=array(
