@@ -558,7 +558,7 @@ class Impress extends CI_Controller
                 return;
             }   
         $account_id=$de_json['account_id'];
-        $content=$de_json['content'];
+        $content=$de_json['impresscontent'];
 
         if ($this->Impresskeyword_model->set_immpress_hidden($account_id,$content)) {
              $callback['status'] = 'ok';
