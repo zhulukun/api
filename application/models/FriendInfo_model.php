@@ -131,26 +131,40 @@
                 }
 
               }
-              for ($i=0; $i <count($user_array)-1; $i++) 
-              { 
-                  $start=$this->_getFirstCharter($user_array[$i]['name']);
 
-                  for ($j=$i+1; $j < count($user_array); $j++) { 
-                   $end=$this->_getFirstCharter($user_array[$j]['name']);
-                   if ($start=='unknow' && $end !='unkonw') {
-                      $temp=$user_array[$i];
-                      $user_array[$i]=$user_array[$j];
-                      $user_array[$j]=$temp;
-                   }
-                   if ($start >= $end && $start!='unknow' &&$end!='unknow') {
-                      $temp=$user_array[$i];
-                      $user_array[$i]=$user_array[$j];
-                      $user_array[$j]=$temp;
-                   }
-
-
+                $cnt=count($user_array);
+               for ($i = 0; $i < $cnt; $i++) 
+                  {
+                      for ($j = 0; $j < $cnt - $i - 1; $j++)
+                       {
+                          $start=$this->_getFirstCharter($user_array[$j]['name']);
+                          $end=$this->_getFirstCharter($user_array[$j+1]['name']);
+                      
+                          if ($start >= $end) 
+                          {
+                              $temp=$user_array[$j];
+                              $user_array[$j]=$user_array[$j+1];
+                              $user_array[$j+1]=$temp;
+                          }
+                      }
                   }
-              }
+
+              // for ($i=0; $i <count($user_array)-1; $i++) 
+              // { 
+              //     $start=$this->_getFirstCharter($user_array[$i]['name']);
+
+
+              //     for ($j=$i+1; $j < count($user_array); $j++) { 
+              //      $end=$this->_getFirstCharter($user_array[$j]['name']);
+              //      if ($start >= $end) {
+              //         $temp=$user_array[$i];
+              //         $user_array[$i]=$user_array[$j];
+              //         $user_array[$j]=$temp;
+              //      }
+
+
+              //     }
+              // }
 
               return $user_array;
 
@@ -250,7 +264,7 @@
 
     //获取汉字的第一个字母
     function _getFirstCharter($str){  
-if(empty($str)){return 'unkonw';}  
+if(empty($str)){return 'ZZZ';}  
 $fchar=ord($str{0});  
 if($fchar>=ord('A')&&$fchar<=ord('z')) return strtoupper($str{0});  
 $s1=iconv('UTF-8','gb2312',$str);  
@@ -280,7 +294,7 @@ if($asc>=-12838&&$asc<=-12557) return 'W';
 if($asc>=-12556&&$asc<=-11848) return 'X';  
 if($asc>=-11847&&$asc<=-11056) return 'Y';  
 if($asc>=-11055&&$asc<=-10247) return 'Z';  
-return 'unknow';  
+return 'ZZZ';  
    }  
         
     }
