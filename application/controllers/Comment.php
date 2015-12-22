@@ -147,7 +147,7 @@ class Comment extends CI_Controller {
                 return;
             }
 
-        // $de_json = (array)json_decode($json,TRUE);
+         $de_json = (array)json_decode($json,TRUE);
 
         // if (!array_key_exists('token', $de_json)) 
         // {
