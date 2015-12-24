@@ -85,7 +85,7 @@
             {
                 $query=$this->db->query("SELECT isview FROM xl_impress_keyword WHERE target_id='{$target_id}' AND impress_keyword='{$content}'");
                  $arr = array();
-
+                 
                 foreach($query->result_array() as $row)
                 {
                     array_push($arr,$row);

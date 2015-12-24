@@ -358,7 +358,7 @@ class Impress extends CI_Controller
         $de_json = (array)json_decode($json,TRUE);
 
     
-        if (!array_key_exists('target_id', $de_json) ||!array_key_exists('operator_id', $de_json) ||!array_key_exists('content', $de_json) ||!array_key_exists('impress_type', $de_json) ||!array_key_exists('is_hidden_user', $de_json)) 
+        if (!array_key_exists('target_id', $de_json) ||!array_key_exists('operator_id', $de_json)  ||!array_key_exists('is_hidden_user', $de_json)) 
             {
                 $callback=array(
                             'code' => '1400',
@@ -372,7 +372,6 @@ class Impress extends CI_Controller
         $target_id = $de_json['target_id'];
         $operator_id = $de_json['operator_id'];
         $content = $de_json['content'];
-        $impress_type=$de_json['impress_type'];
         $is_hidden_user=$de_json['is_hidden_user'];
 
         $content_len=count($content);
@@ -385,23 +384,26 @@ class Impress extends CI_Controller
             return;
         }
 
-        //判断操作者是否为当前用户添加过亲友的印象
-        if ($impress_type == '1') 
-        {
-            # code...
-            if ($this->Impress_model->is_add_relation($operator_id,$target_id)) 
-            {
-                # code...
-                $callback['status'] = 'fail';
-                $callback['response'] = array('code'=>'1500','message'=>'you have added relation impress for this user');
-                echo(json_encode($callback));
-                return;
-             }
-
-        }
+       
         $result=TRUE;
         for ($i=0; $i < $content_len; $i++) 
         { 
+             //判断操作者是否为当前用户添加过亲友的印象
+            $impress_type=$content[$i]['impresstype'];
+            if ($impress_type == '1') 
+            {
+                # code...
+                if ($this->Impress_model->is_add_relation($operator_id,$target_id)) 
+                {
+                    # code...
+                    $callback['status'] = 'fail';
+                    $callback['response'] = array('code'=>'1500','message'=>'you have added relation impress for this user');
+                    echo(json_encode($callback));
+                    return;
+                 }
+
+            }
+
             if($this->Impress_model->is_useradd_theimpress($operator_id,$target_id,$content[$i]['content']))
             {
                 continue;
