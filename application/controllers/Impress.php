@@ -384,6 +384,41 @@ class Impress extends CI_Controller
             return;
         }
 
+         for ($i=0; $i < $content_len; $i++) 
+        { 
+             //判断操作者是否为当前用户添加过亲友的印象
+            $impress_type=$content[$i]['impresstype'];
+            if ($impress_type == '1') 
+            {
+                # code...
+                if ($this->Impress_model->is_add_relation($operator_id,$target_id)) 
+                {
+                    # code...
+                    $callback['status'] = 'fail';
+                    $callback['response'] = array('code'=>'1500','message'=>'you have added relation impress for this user');
+                    echo(json_encode($callback));
+                    return;
+                 }
+
+            }
+        }
+
+        $json_content=json_encode($content);
+        $arr['id'] = md5(uniqid(md5(microtime(true)),true));
+
+        $arr['target_id'] = $target_id;
+        $arr['operator_id'] = $operator_id;
+        $arr['impresscontent'] = $json_content;
+        $arr['is_hidden_user']=$is_hidden_user;
+
+        $result1 = $this->Impress_model->add_impress_item($arr);
+
+        if (!$result1) {
+            $callback['status'] = 'fail';
+            $callback['response'] = array('code'=>'1500','message'=>'insert fail');
+            echo(json_encode($callback));
+            return;
+        }
        
         $result=TRUE;
         for ($i=0; $i < $content_len; $i++) 
@@ -403,6 +438,7 @@ class Impress extends CI_Controller
                  }
 
             }
+
 
             if($this->Impress_model->is_useradd_theimpress($operator_id,$target_id,$content[$i]['content']))
             {
@@ -456,7 +492,6 @@ class Impress extends CI_Controller
     public function get_preset_impress()
     {
         
-
         $count = $this->Impress_model->count_preset_impresses();
         if($count == 0)  //查询不到任何印象
         {
@@ -503,6 +538,7 @@ class Impress extends CI_Controller
         }
         
     }
+
 
     /**
      * 获取系统预设关键字
@@ -577,12 +613,127 @@ class Impress extends CI_Controller
         return;
 
 
-
-
     }
 
+    function get_impress_items()
+    {
+            $json=file_get_contents("php://input");
+            if(is_null(json_decode($json)))
+                {
+                    $callback=array(
+                            'code' => '1300',
+                            'msg' => 'json data invalid'
+                        );
+
+                    echo(json_encode($callback));
+                    return;
+                }
+
+            $de_json = (array)json_decode($json,TRUE);
+
+            
+
+            if (!array_key_exists('account_id', $de_json) ) 
+                {
+                    $callback=array(
+                                'code' => '1400',
+                                'msg' => 'invalid params'
+                            );
+
+                    echo(json_encode($callback));
+                    return;
+                }   
+            
 
 
+            $target_id = $de_json['account_id'];
+         
+            $count = $this->Impress_model->count_impress_item($target_id);
+            if($count == 0)  
+            {
+                $callback['status'] = 'fail';
+                $callback['response'] = array('code'=>'1500','message'=>'user no impress items');
+                echo json_encode($callback);
+                return;
+            }
+            else
+            {
+                $arr=$this->Impress_model->get_impress_items($target_id);
+                $arr_user['friendinfo']=$arr;
+                $callback['status'] = 'ok';
+                $callback['response'] =$arr_user;
+                echo json_encode($callback);
+                return;
+            }
+    }
+
+    //对印象条目点赞
+    public function like_impress_item()
+    {
+        $json=file_get_contents("php://input");
+            if(is_null(json_decode($json)))
+                {
+                    $callback=array(
+                            'code' => '1300',
+                            'msg' => 'json data invalid'
+                        );
+
+                    echo(json_encode($callback));
+                    return;
+                }
+
+            $de_json = (array)json_decode($json,TRUE);
+
+            
+
+            if (!array_key_exists('impress_id', $de_json) || !array_key_exists('operator_id', $de_json)) 
+                {
+                    $callback=array(
+                                'code' => '1400',
+                                'msg' => 'invalid params'
+                            );
+
+                    echo(json_encode($callback));
+                    return;
+                }   
+            
+            $impress_id = $de_json['impress_id'];
+            $operator_id=$de_json['operator_id'];
+            $impressitemref['id']=md5(uniqid(md5(microtime(true)),true));
+            $impressitemref['impress_id']=$impress_id;
+            $impressitemref['operator_id']=$operator_id;
+
+            if (!$this->Impress_model->is_user_like($operator_id,$impress_id))
+            {
+                if($this->Impress_model->like_impress_item($impress_id) && $this->Impress_model->add_likeref_account($impressitemref))
+                {
+                    $callback['status']='ok';
+                    echo(json_encode($callback));
+                    return;
+                }
+
+                $callback['status'] = 'fail';
+                $callback['response'] = array('code'=>'1500','message'=>'like impress fail');
+                echo json_encode($callback);
+                return;
+            }
+            else
+            {
+                if ($this->Impress_model->cancle_like_impress($impress_id) && $this->Impress_model->delete_likeref_account($operator_id)) 
+                {
+                    $callback['status']='ok';
+                    echo(json_encode($callback));
+                    return;
+                }
+
+                $callback['status'] = 'fail';
+                $callback['response'] = array('code'=>'1500','message'=>'no like impress fail');
+                echo json_encode($callback);
+                return;
+
+            }
+         
+    }
 
 
 }
