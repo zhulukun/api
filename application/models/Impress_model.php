@@ -314,4 +314,139 @@ class Impress_model extends CI_Model {
         return $arr;
     }
 
+    //添加印象状态
+    function add_impress_item($arr)
+    {
+        $query=$this->db->insert('xl_impressitem',$arr);
+        return $query;
+    }
+
+    //获取印象条目
+    function count_impress_item($target_id)
+    {
+        $query = $this->db->query("SELECT id FROM xl_impressitem WHERE target_id = '{$target_id}'");
+
+        return $query->num_rows();
+    }
+
+    //获取用户印象条目
+    function get_impress_items($target_id)
+    {
+        $query=$this->db->query("SELECT * FROM xl_impressitem WHERE target_id = '{$target_id}'");
+
+        $arr = array();
+
+        foreach ($query -> result_array() as $row) 
+        {
+            array_push($arr, $row);
+        }
+
+          for ($i=0; $i < count($arr); $i++) { 
+            $operator_id=$arr[$i]['operator_id'];
+            
+            $query_avatar_url=$this->db->query("SELECT avatar_url AS avatar_url FROM xl_avatar WHERE account_id='{$operator_id}'");
+
+            $query_account_info=$this->db->query("SELECT id,nickname,cellphone,sex,birthday,horoscope,status,register_user,type FROM xl_account WHERE id='{$operator_id}'");
+
+            $arr_info = array();
+
+            foreach($query_account_info->result_array() as $row)
+            {
+                    array_push($arr_info,$row);
+            }
+
+            $user_info=array();
+
+           if (count($arr_info)>0) 
+             {
+                $user_info['account_id']=$arr_info[0]['id'];
+                $user_info['nickname']=$arr_info[0]['nickname'];
+             }
+
+            
+         
+            if ($query_avatar_url->num_rows()>0) 
+            {
+                $arr_avatar = array();
+
+                foreach($query_avatar_url->result_array() as $row)
+                {
+                      array_push($arr_avatar,$row);
+                }
+
+                $user_avatar=$arr_avatar[0];
+
+           }
+
+            else
+             {
+                $user_avatar=array('avatar_url' => '', );
+
+             }
+         $user_impress['impress_id'] = $arr[$i]['id'];
+         $user_impress['impresscontent'] = $arr[$i]['impresscontent'];
+         $user_impress['likenum']=$arr[$i]['likenum'];
+         $user_impress['commentnum']=$arr[$i]['commentnum'];
+         $user_impress['updatetime']=$arr[$i]['updatetime'];
+         $user_info=array_merge($user_info, $user_avatar);
+         $user_info=array_merge($user_info,$user_impress);
+         $details_arr[$i]=$user_info;
+
+        }
+        return $details_arr;
+    }
+
+    //对印象条目发起喜欢
+    function like_impress_item($impress_id)
+    {
+        $query=$this->db->query("UPDATE xl_impressitem SET likenum=likenum+1 WHERE id='{$impress_id}'");
+        if ($this->db->affected_rows()>0) 
+        {
+            return TRUE;
+        }
+
+        return FALSE;
+    }
+
+    //记录点赞人
+    function add_likeref_account($arr)
+    {
+        return $this->db->insert('xl_impressitemref',$arr);
+    }
+
+    //判断该用户是否点过赞
+    function is_user_like($operator_id,$impress_id)
+    {
+        $query=$this->db->query("SELECT operator_id FROM xl_impressitemref ");
+        if ($query->num_rows()>0)
+        {
+            return TRUE;
+        }
+        return FALSE;
+    }
+
+    //取消点赞 likenum减去1
+    function cancle_like_impress($impress_id)
+    {
+        $query=$this->db->query("UPDATE xl_impressitem SET likenum=likenum-1 WHERE id='{$impress_id}'");
+        if ($this->db->affected_rows()>0) 
+        {
+            return TRUE;
+        }
+
+        return FALSE;
+    }
+
+    //删除点赞人
+    function delete_likeref_account($operator_id)
+    {
+        $query=$this->db->query("DELETE FROM xl_impressitemref WHERE operator_id='{$operator_id}'");
+        if ($this->db->affected_rows()>0) 
+        {
+            return TRUE;
+        }
+
+        return FALSE;
+    }
+
 }
