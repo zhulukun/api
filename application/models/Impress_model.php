@@ -385,9 +385,12 @@ class Impress_model extends CI_Model {
              }
          $user_impress['impress_id'] = $arr[$i]['id'];
          $user_impress['impresscontent'] = $arr[$i]['impresscontent'];
+         $user_impress['is_hidden_user']=$arr[$i]['is_hidden_user'];
+
          $user_impress['likenum']=$arr[$i]['likenum'];
          $user_impress['commentnum']=$arr[$i]['commentnum'];
          $user_impress['updatetime']=$arr[$i]['updatetime'];
+
          $user_info=array_merge($user_info, $user_avatar);
          $user_info=array_merge($user_info,$user_impress);
          $details_arr[$i]=$user_info;
