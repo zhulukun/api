@@ -763,7 +763,7 @@ class User extends CI_Controller {
   //       }
 
 
-	 	if (!array_key_exists('account_id', $de_json) || !array_key_exists('sex', $de_json) || !array_key_exists('birthday', $de_json) || !array_key_exists('horoscope', $de_json) || !array_key_exists('allow_notice', $de_json)) 
+	 	if (!array_key_exists('account_id', $de_json) || !array_key_exists('nickname', $de_json) || !array_key_exists('sex', $de_json) || !array_key_exists('birthday', $de_json) || !array_key_exists('horoscope', $de_json) || !array_key_exists('allow_notice', $de_json)) 
 	        {
 	        	$callback=array(
 		        			'code' => '1400',
@@ -774,13 +774,13 @@ class User extends CI_Controller {
 	        	return;
 	        }
 	    $account_id=$de_json['account_id'];	
-	    // $nickname=$de_json['nickname'];
+	    $nickname=$de_json['nickname'];
 	    $sex=$de_json['sex'];
 	    $birthday=$de_json['birthday'];
 	    $horoscope=$de_json['horoscope'];
 	    $allow_notice=$de_json['allow_notice'];
 
-        $result = $this->User_model->update_account_info($account_id,$sex,$birthday,$horoscope,$allow_notice);
+        $result = $this->User_model->update_account_info($account_id,$nickname,$sex,$birthday,$horoscope,$allow_notice);
 
         if ($result) {
         	$callback['status']='ok';
