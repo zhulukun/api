@@ -332,7 +332,7 @@ class Impress_model extends CI_Model {
     //获取用户印象条目
     function get_impress_items($target_id)
     {
-        $query=$this->db->query("SELECT * FROM xl_impressitem WHERE target_id = '{$target_id}'");
+        $query=$this->db->query("SELECT * FROM xl_impressitem WHERE target_id = '{$target_id}' ORDER BY updatetime DESC");
 
         $arr = array();
 
@@ -448,5 +448,6 @@ class Impress_model extends CI_Model {
 
         return FALSE;
     }
+
 
 }

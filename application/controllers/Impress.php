@@ -18,6 +18,8 @@ class Impress extends CI_Controller
         $this->load->helper('url');
         $this->load->model('Impress_model');
         $this->load->model('Impresskeyword_model');
+        $this->load->model('Impresscomment_model');
+
         $this->load->library('session');
                
 
@@ -735,5 +737,110 @@ class Impress extends CI_Controller
          
     }
 
+    public function add_comment_for_impress()
+    {
+        $json=file_get_contents("php://input");
+            if(is_null(json_decode($json)))
+                {
+                    $callback=array(
+                            'code' => '1300',
+                            'msg' => 'json data invalid'
+                        );
+
+                    echo(json_encode($callback));
+                    return;
+                }
+
+            $de_json = (array)json_decode($json,TRUE);
+
+            
+
+            if (!array_key_exists('impress_id', $de_json) || !array_key_exists('operator_id', $de_json) || !array_key_exists('content', $de_json) ) 
+                {
+                    $callback=array(
+                                'code' => '1400',
+                                'msg' => 'invalid params'
+                            );
+
+                    echo(json_encode($callback));
+                    return;
+                }   
+            
+            $impress_id = $de_json['impress_id'];
+            $operator_id=$de_json['operator_id'];
+            $comment['id']=md5(uniqid(md5(microtime(true)),true));
+            $comment['impress_id']=$impress_id;
+            $comment['operator_id']=$operator_id;
+            $comment['content']=$de_json['content'];
+
+            if ($this->Impresscomment_model->add_comment_for_impress($comment) && $this->Impresscomment_model->add_comment_num($impress_id)) 
+            {
+              
+                    $callback['status']='ok';
+                    echo(json_encode($callback));
+                    return;
+            }
+
+                $callback['status'] = 'fail';
+                $callback['response'] = array('code'=>'1500','message'=>'add comment fail');
+                echo json_encode($callback);
+                return;
+
+    }
+
+    //获取当前印象下的评论
+    public function get_impress_comments()
+    {
+            $json=file_get_contents("php://input");
+            if(is_null(json_decode($json)))
+                {
+                    $callback=array(
+                            'code' => '1300',
+                            'msg' => 'json data invalid'
+                        );
+
+                    echo(json_encode($callback));
+                    return;
+                }
+
+            $de_json = (array)json_decode($json,TRUE);
+
+            
+
+            if (!array_key_exists('impress_id', $de_json) ) 
+                {
+                    $callback=array(
+                                'code' => '1400',
+                                'msg' => 'invalid params'
+                            );
+
+                    echo(json_encode($callback));
+                    return;
+                }   
+            
+            $impress_id = $de_json['impress_id'];
+
+            $count = $this->Impresscomment_model->count_comment($impress_id);
+            if($count == 0)  
+            {
+                $callback['status'] = 'fail';
+                $callback['response'] = array('code'=>'1500','message'=>'user no impress items');
+                echo json_encode($callback);
+                return;
+            }
+            else
+            {
+                $arr=$this->Impresscomment_model->get_impress_comments($impress_id);
+                $impress_comments['comment']=$arr;
+                $callback['status'] = 'ok';
+                $callback['response'] =$impress_comments;
+                echo json_encode($callback);
+                return;
+            }
+
+         
+    }
+
+    
 
 }
