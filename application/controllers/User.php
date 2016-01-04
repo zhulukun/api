@@ -924,9 +924,23 @@ class User extends CI_Controller {
 	    $operator_id=$de_json['operator_id'];	
 	    $nickname=$de_json['nickname'];
         $result = $this->User_model->search_user($operator_id,$nickname);
+        if (count($result)>0) 
+        {
+        	$callback=array(
+        		'status' => 'ok',
+        		'response' =>$result
+        		);
+        	echo json_encode($callback);
+        	return;
+        }
+        
+		$callback=array(
+        		'status' => 'fail'
+        		);
+        	echo json_encode($callback);
+        	return;
 
-        echo json_encode($result);
-        return;
+       
     }
 
 
