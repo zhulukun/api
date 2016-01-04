@@ -245,6 +245,7 @@
 
       }
 
+      //修改用户信息
       function update_account_info($account_id,$nickname,$sex,$birthday,$horoscope,$allow_notice)        
       {
             $query=$this->db->query("UPDATE xl_account SET nickname='{$nickname}',sex='{$sex}',birthday='{$birthday}',horoscope='{$horoscope}',allow_notice='{$allow_notice}' WHERE id='{$account_id}'");
@@ -254,6 +255,7 @@
             return FALSE;
       }
 
+      //更新密码
         function update_password($phone,$new_password)
         {
             $query = $this->db->query("SELECT id FROM xl_account WHERE cellphone='{$phone}'");
@@ -265,6 +267,115 @@
             return TRUE;
         }
 
+        //通过nickname或者name搜索用户
+        function search_user($operator_id,$name)
+        {
+          //搜索已经注册的好友
+          $query_userinfo = $this->db->query("SELECT id,nickname,cellphone,sex,birthday,horoscope,status,register_user,type FROM xl_account WHERE nickname='{$name}'");
+
+          $arr_userinfo=array();
+
+          foreach ($query_userinfo ->result_array() as $row) 
+          {
+              array_push($arr_userinfo, $row);
+          }
+
+          if (count($arr_userinfo) == 0) {
+              return $arr_userinfo;
+          }
+
+          $account_id = $arr_userinfo[0]['id'];
+          $user_info = $arr_userinfo[0];
+          $query_avatar_url=$this->db->query("SELECT avatar_url AS avatar_url FROM xl_avatar WHERE account_id='{$account_id}'");
+
+          if ($query_avatar_url->num_rows()>0) 
+          {
+              $arr_avatar = array();
+
+              foreach($query_avatar_url->result_array() as $row)
+              {
+                    array_push($arr_avatar,$row);
+              }
+
+              $user_avatar=$arr_avatar[0];
+
+          }
+         else
+           {
+              $user_avatar=array('avatar_url' => '', );
+
+           }
+
+         $user_info=array_merge($user_info, $user_avatar);
+
+         //搜索未注册的好友
+        $unreg_query_userinfo=$this->db->query("SELECT cellphone FROM xl_friendrelation WHERE name='{$name}' AND parent_id='{$operator_id}'");
+
+        if ($unreg_query_userinfo->num_rows() == 0) 
+        {
+             return $user_info;
+        }
+
+        $unreg_userinfo=array();
+
+        foreach($unreg_query_userinfo->result_array() as $row)
+        {
+            array_push($unreg_userinfo,$row);
+        }
+        for($i=0;$i<count($unreg_userinfo);$i++)
+        {
+            $cellphone=$unreg_userinfo[$i]['cellphone'];
+            $unreg_query_userinfo = $this->db->query("SELECT id,cellphone,sex,birthday,horoscope,status,register_user,type FROM xl_account WHERE cellphone='{$cellphone}'");
+            $unreg_arr_userinfo=array();
+
+            foreach ($unreg_query_userinfo ->result_array() as $row) 
+            {
+                array_push($unreg_arr_userinfo, $row);
+            }
+            $account_id = $unreg_arr_userinfo[0]['id'];
+            $unreg_userinfos = $unreg_arr_userinfo[0];
+            $unreg_userinfos['name']=$name;
+            $query_avatar_url=$this->db->query("SELECT avatar_url AS avatar_url FROM xl_avatar WHERE account_id='{$account_id}'");
+
+            if ($query_avatar_url->num_rows()>0) 
+            {
+                $arr_avatar = array();
+
+                foreach($query_avatar_url->result_array() as $row)
+                {
+                      array_push($arr_avatar,$row);
+                }
+
+                $user_avatar=$arr_avatar[0];
+
+            }
+             else
+             {
+                $user_avatar=array('avatar_url' => '', );
+
+             }
+
+           $unreg_userinfos=array_merge($unreg_userinfos, $user_avatar);
+           $unreg_userinfo[$i]=$unreg_userinfos;
+        }
+
+        $user[0]=$user_info;
+        for ($i=0,$j=1; $i < count($unreg_userinfo); $i++,$j++) 
+        { 
+          $user[$j]=$unreg_userinfo[$i];
+        }
+
+        return $user;
+
+
+
+
+         
+
+
+          
+          
+        }
 
        
       

@@ -894,7 +894,41 @@ class User extends CI_Controller {
         }
     }
 
-    
+    public function search_user()
+    {
+    	$json=file_get_contents("php://input");
+		if(is_null(json_decode($json)))
+			{
+				$callback=array(
+	        			'code' => '1300',
+	        			'msg' => 'json data invalid'
+	        		);
+
+	        	echo(json_encode($callback));
+	        	return;
+			}
+
+		$de_json = (array)json_decode($json,TRUE);
+
+
+    if (!array_key_exists('operator_id', $de_json) || !array_key_exists('nickname', $de_json)) 
+	        {
+	        	$callback=array(
+		        			'code' => '1400',
+		        			'msg' => 'invalid params'
+		        		);
+
+	        	echo(json_encode($callback));
+	        	return;
+	        }
+	    $operator_id=$de_json['operator_id'];	
+	    $nickname=$de_json['nickname'];
+        $result = $this->User_model->search_user($operator_id,$nickname);
+
+        echo json_encode($result);
+        return;
+    }
+
 
 
 
