@@ -854,7 +854,7 @@ class User extends CI_Controller {
   //       }
 
 
-	 	if (!array_key_exists('phone', $de_json) || !array_key_exists('new_password', $de_json) || !array_key_exists('code', $de_json) || !array_key_exists('new_password2', $de_json)) 
+	 	if (!array_key_exists('phone', $de_json) || !array_key_exists('new_password', $de_json) ||  !array_key_exists('new_password2', $de_json)) 
 	        {
 	        	$callback=array(
 		        			'code' => '1400',
@@ -866,7 +866,6 @@ class User extends CI_Controller {
 	        }
 
         $phone = $de_json['phone'];
-        $code = $de_json['code'];
         $new_password = $de_json['new_password'];
         $new_password2 = $de_json['new_password2'];
 
@@ -878,20 +877,10 @@ class User extends CI_Controller {
          			);
          }
 
-        if($code == $_SESSION['code'])
-        {
-        	$this->session->set_userdata('token',$_SESSION['token'],7*24*60*60);
-            $this->User_model->update_password($phone,$new_password);
-            $callback['status'] = 'ok';
-            echo json_encode($callback);
-        }
-        else
-        {
-            //验证码错误
-            $callback['status'] = 'fail';
-            $callback['response'] = array('message' => 'code error');
-            echo json_encode($callback);
-        }
+        $this->User_model->update_password($phone,$new_password);
+        $callback['status'] = 'ok';
+        echo json_encode($callback);
+        
     }
 
     public function search_user()
@@ -939,7 +928,6 @@ class User extends CI_Controller {
         		);
         	echo json_encode($callback);
         	return;
-
        
     }
 
