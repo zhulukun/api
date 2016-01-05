@@ -325,7 +325,7 @@
         for($i=0;$i<count($unreg_userinfo);$i++)
         {
             $cellphone=$unreg_userinfo[$i]['cellphone'];
-            $unreg_query_userinfo = $this->db->query("SELECT id,cellphone,sex,birthday,horoscope,status,register_user,type FROM xl_account WHERE cellphone='{$cellphone}'");
+            $unreg_query_userinfo = $this->db->query("SELECT xl_account.id,xl_account.cellphone,xl_account.sex,xl_account.birthday,xl_account.horoscope,xl_account.status,xl_account.register_user,xl_account.type,xl_friendrelation.name FROM xl_account,xl_friendrelation WHERE xl_account.cellphone='{$cellphone}' AND xl_account.cellphone=xl_friendrelation.cellphone");
             $unreg_arr_userinfo=array();
 
             foreach ($unreg_query_userinfo ->result_array() as $row) 
@@ -334,7 +334,6 @@
             }
             $account_id = $unreg_arr_userinfo[0]['id'];
             $unreg_userinfos = $unreg_arr_userinfo[0];
-            $unreg_userinfos['name']=$name;
             $query_avatar_url=$this->db->query("SELECT avatar_url AS avatar_url FROM xl_avatar WHERE account_id='{$account_id}'");
 
             if ($query_avatar_url->num_rows()>0) 
