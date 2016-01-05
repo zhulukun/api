@@ -14,7 +14,7 @@ class Message extends CI_Controller {
 		       
 
     }
-
+    
 	public function index()
 	{
 		$this->load->helper('url');
@@ -169,6 +169,73 @@ class Message extends CI_Controller {
 
 	}
 
+	/**
+	 *
+	 *	修改密码时发送短信接口
+	 *
+	 */
+	public function send_sms()
+	{
+		$json=file_get_contents("php://input");
+		if(is_null(json_decode($json)))
+			{
+				$callback=array(
+	        			'code' => '1300',
+	        			'msg' => 'json data invalid'
+	        		);
+
+	        	echo(json_encode($callback));
+	        	return;
+			}
+
+		$de_json = (array)json_decode($json,TRUE);
+
+	 	if (!array_key_exists('phone', $de_json)) 
+	        {
+	        	$callback=array(
+		        			'code' => '1400',
+		        			'msg' => 'invalid params'
+		        		);
+
+	        	echo(json_encode($callback));
+	        	return;
+	        }
+
+		$cellphone=$de_json['phone'];
+
+		
+
+		$username='youli';
+      	$password='youli123';
+      	$apikey='2fd8eb942e6a99f4715986605f7895f7';
+      	$mobile=$cellphone;
+
+      	$random=rand(100000,999999);
+      	$this->session->set_tempdata('code',$random, 120);
+      	$this->session->set_tempdata('phone',$cellphone, 120);
+      	$content='您的有礼验证码:'.$random.',如果不是本人操作,请忽略.';
+
+      	$url='http://m.5c.com.cn/api/send/index.php?username='.$username.'&password='.$password.'&apikey='.$apikey.'&mobile='.$mobile.'&content='.$content.'';  
+
+      	$html = file_get_contents($url);  
+
+	    $status=explode(":",$html);
+
+	    if ($status[0] == 'success') {
+	    	$callback['status']='ok';
+	    	echo json_encode($callback);
+	   	   return;
+	    }
+
+	    $callback['status']='fail';
+		$callback['response']=array(
+					'code' => '1500',
+					'message' => 'send message fail'
+				);
+		echo(json_encode($callback));
+		return;
+
+	}
 
 
 }
