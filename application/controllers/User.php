@@ -898,9 +898,6 @@ class User extends CI_Controller {
 			}
 
 		$de_json = (array)json_decode($json,TRUE);
-
-		print_r($de_json);
-		die();
     if (!array_key_exists('operator_id', $de_json) || !array_key_exists('nickname', $de_json)) 
 	        {
 	        	$callback=array(
