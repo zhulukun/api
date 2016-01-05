@@ -271,44 +271,45 @@
         function search_user($operator_id,$name)
         {
           //搜索已经注册的好友
-          $query_userinfo = $this->db->query("SELECT id,nickname,cellphone,sex,birthday,horoscope,status,register_user,type FROM xl_account WHERE nickname='{$name}'");
+         //  $query_userinfo = $this->db->query("SELECT id,nickname,cellphone,sex,birthday,horoscope,status,register_user,type FROM xl_account WHERE nickname='{$name}'");
 
-          $arr_userinfo=array();
+         //  $arr_userinfo=array();
 
-          foreach ($query_userinfo ->result_array() as $row) 
-          {
-              array_push($arr_userinfo, $row);
-          }
+         //  foreach ($query_userinfo ->result_array() as $row) 
+         //  {
+         //      array_push($arr_userinfo, $row);
+         //  }
 
-          if (count($arr_userinfo) == 0) {
-              return $arr_userinfo;
-          }
+         //  if (count($arr_userinfo) == 0) {
+         //      return $arr_userinfo;
+         //  }
 
-          $account_id = $arr_userinfo[0]['id'];
-          $user_info = $arr_userinfo[0];
-          $query_avatar_url=$this->db->query("SELECT avatar_url AS avatar_url FROM xl_avatar WHERE account_id='{$account_id}'");
+         //  $account_id = $arr_userinfo[0]['id'];
+         //  $user_info = $arr_userinfo[0];
+         //  $query_avatar_url=$this->db->query("SELECT avatar_url AS avatar_url FROM xl_avatar WHERE account_id='{$account_id}'");
 
-          if ($query_avatar_url->num_rows()>0) 
-          {
-              $arr_avatar = array();
+         //  if ($query_avatar_url->num_rows()>0) 
+         //  {
+         //      $arr_avatar = array();
 
-              foreach($query_avatar_url->result_array() as $row)
-              {
-                    array_push($arr_avatar,$row);
-              }
+         //      foreach($query_avatar_url->result_array() as $row)
+         //      {
+         //            array_push($arr_avatar,$row);
+         //      }
 
-              $user_avatar=$arr_avatar[0];
+         //      $user_avatar=$arr_avatar[0];
 
-          }
-         else
-           {
-              $user_avatar=array('avatar_url' => '', );
+         //  }
+         // else
+         //   {
+         //      $user_avatar=array('avatar_url' => '', );
 
-           }
+         //   }
 
-         $user_info=array_merge($user_info, $user_avatar);
+         // $user_info=array_merge($user_info, $user_avatar);
 
          //搜索未注册的好友
+        $user_info=array();
         $unreg_query_userinfo=$this->db->query("SELECT cellphone FROM xl_friendrelation WHERE name='{$name}' AND parent_id='{$operator_id}'");
 
         if ($unreg_query_userinfo->num_rows() == 0) 
@@ -358,10 +359,9 @@
            $unreg_userinfo[$i]=$unreg_userinfos;
         }
 
-        $user[0]=$user_info;
-        for ($i=0,$j=1; $i < count($unreg_userinfo); $i++,$j++) 
+        for ($i=0; $i < count($unreg_userinfo); $i++) 
         { 
-          $user[$j]=$unreg_userinfo[$i];
+          $user[$i]=$unreg_userinfo[$i];
         }
 
         return $user;
