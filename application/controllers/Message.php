@@ -80,7 +80,7 @@ class Message extends CI_Controller {
       	$this->session->set_tempdata('phone',$cellphone, 120);
       	$content='您的有礼验证码:'.$random.',如果不是本人操作,请忽略.';
 
-      	$url='http://m.5c.com.cn/api/send/index.php?username='.$username.'&password='.$password.'&apikey='.$apikey.'&mobile='.$mobile.'&content='.$content.'';  
+      	$url='http://m.5c.com.cn/api/send/index.php?username='.$username.'&password='.$password.'&apikey='.$apikey.'&mobile='.$mobile.'&content='.$content.'&encode=1';  
 
       	$html = file_get_contents($url);  
 
