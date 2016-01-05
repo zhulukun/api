@@ -47,7 +47,7 @@ class User extends CI_Controller {
 			{
 				$callback=array(
 	        			'code' => '1300',
-	        			'msg' => 'json data invalid'
+	        			'message' => 'json data invalid'
 	        		);
 
 	        	echo(json_encode($callback));
@@ -60,7 +60,7 @@ class User extends CI_Controller {
 	        {
 	        	$callback=array(
 		        			'code' => '1400',
-		        			'msg' => 'invalid params'
+		        			'message' => 'invalid params'
 		        		);
 
 	        	echo(json_encode($callback));
@@ -113,7 +113,7 @@ class User extends CI_Controller {
 			{
 				$callback=array(
 	        			'code' => '1300',
-	        			'msg' => 'json data invalid'
+	        			'message' => 'json data invalid'
 	        		);
 
 	        	echo(json_encode($callback));
@@ -126,7 +126,7 @@ class User extends CI_Controller {
 	        {
 	        	$callback=array(
 		        			'code' => '1400',
-		        			'msg' => 'invalid params'
+		        			'message' => 'invalid params'
 		        		);
 
 	        	echo(json_encode($callback));
@@ -220,7 +220,7 @@ class User extends CI_Controller {
 			{
 				$callback=array(
 	        			'code' => '1300',
-	        			'msg' => 'json data invalid'
+	        			'message' => 'json data invalid'
 	        		);
 
 	        	echo(json_encode($callback));
@@ -233,7 +233,7 @@ class User extends CI_Controller {
 		// {
 		// 	$callback=array(
 	 //        			'code' => '1100',
-	 //        			'msg' => 'token do not exist'
+	 //        			'message' => 'token do not exist'
 	 //        		);
 
   //       	echo(json_encode($callback));
@@ -249,7 +249,7 @@ class User extends CI_Controller {
 	 //        {
 	 //        	$callback=array(
 		//         			'code' => '1000',
-		//         			'msg' => ' Authentication error'
+		//         			'message' => ' Authentication error'
 		//         		);
 
 	 //        	echo(json_encode($callback));
@@ -260,7 +260,7 @@ class User extends CI_Controller {
   //       {
   //       	$callback=array(
 		//         			'code' => '1200',
-		//         			'msg' => 'token is out of date'
+		//         			'message' => 'token is out of date'
 		//         		);
 
 	 //        	echo(json_encode($callback));
@@ -307,7 +307,7 @@ class User extends CI_Controller {
 			{
 				$callback=array(
 	        			'code' => '1300',
-	        			'msg' => 'json data invalid'
+	        			'message' => 'json data invalid'
 	        		);
 
 	        	echo(json_encode($callback));
@@ -320,7 +320,7 @@ class User extends CI_Controller {
 		// {
 		// 	$callback=array(
 	 //        			'code' => '1100',
-	 //        			'msg' => 'token do not exist'
+	 //        			'message' => 'token do not exist'
 	 //        		);
 
   //       	echo(json_encode($callback));
@@ -336,7 +336,7 @@ class User extends CI_Controller {
 	 //        {
 	 //        	$callback=array(
 		//         			'code' => '1000',
-		//         			'msg' => ' Authentication error'
+		//         			'message' => ' Authentication error'
 		//         		);
 
 	 //        	echo(json_encode($callback));
@@ -347,7 +347,7 @@ class User extends CI_Controller {
   //       {
   //       	$callback=array(
 		//         			'code' => '1200',
-		//         			'msg' => 'token is out of date'
+		//         			'message' => 'token is out of date'
 		//         		);
 
 	 //        	echo(json_encode($callback));
@@ -358,7 +358,7 @@ class User extends CI_Controller {
 	        {
 	        	$callback=array(
 		        			'code' => '1400',
-		        			'msg' => 'invalid params'
+		        			'message' => 'invalid params'
 		        		);
 
 	        	echo(json_encode($callback));
@@ -375,7 +375,7 @@ class User extends CI_Controller {
 				"status" => 'fail',
 				"response" => array(
 						"code" => '1500',
-						"msg" => 'the user does not exist'
+						"message" => 'the user does not exist'
 					)
 			);
 			echo json_encode($callback);
@@ -407,7 +407,7 @@ class User extends CI_Controller {
 			{
 				$callback=array(
 	        			'code' => '1300',
-	        			'msg' => 'json data invalid'
+	        			'message' => 'json data invalid'
 	        		);
 
 	        	echo(json_encode($callback));
@@ -420,7 +420,7 @@ class User extends CI_Controller {
 		// {
 		// 	$callback=array(
 	 //        			'code' => '1100',
-	 //        			'msg' => 'token do not exist'
+	 //        			'message' => 'token do not exist'
 	 //        		);
 
   //       	echo(json_encode($callback));
@@ -436,7 +436,7 @@ class User extends CI_Controller {
 	 //        {
 	 //        	$callback=array(
 		//         			'code' => '1000',
-		//         			'msg' => ' Authentication error'
+		//         			'message' => ' Authentication error'
 		//         		);
 
 	 //        	echo(json_encode($callback));
@@ -447,7 +447,7 @@ class User extends CI_Controller {
   //       {
   //       	$callback=array(
 		//         			'code' => '1200',
-		//         			'msg' => 'token is out of date'
+		//         			'message' => 'token is out of date'
 		//         		);
 
 	 //        	echo(json_encode($callback));
@@ -459,7 +459,7 @@ class User extends CI_Controller {
 	        {
 	        	$callback=array(
 		        			'code' => '1400',
-		        			'msg' => 'invalid params'
+		        			'message' => 'invalid params'
 		        		);
 
 	        	echo(json_encode($callback));
@@ -620,7 +620,7 @@ class User extends CI_Controller {
 			{
 				$callback=array(
 	        			'code' => '1300',
-	        			'msg' => 'json data invalid'
+	        			'message' => 'json data invalid'
 	        		);
 
 	        	echo(json_encode($callback));
@@ -633,7 +633,7 @@ class User extends CI_Controller {
 		// {
 		// 	$callback=array(
 	 //        			'code' => '1100',
-	 //        			'msg' => 'token do not exist'
+	 //        			'message' => 'token do not exist'
 	 //        		);
 
   //       	echo(json_encode($callback));
@@ -649,7 +649,7 @@ class User extends CI_Controller {
 	 //        {
 	 //        	$callback=array(
 		//         			'code' => '1000',
-		//         			'msg' => ' Authentication error'
+		//         			'message' => ' Authentication error'
 		//         		);
 
 	 //        	echo(json_encode($callback));
@@ -660,7 +660,7 @@ class User extends CI_Controller {
   //       {
   //       	$callback=array(
 		//         			'code' => '1200',
-		//         			'msg' => 'token is out of date'
+		//         			'message' => 'token is out of date'
 		//         		);
 
 	 //        	echo(json_encode($callback));
@@ -672,7 +672,7 @@ class User extends CI_Controller {
 	        {
 	        	$callback=array(
 		        			'code' => '1400',
-		        			'msg' => 'invalid params'
+		        			'message' => 'invalid params'
 		        		);
 
 	        	echo(json_encode($callback));
@@ -715,7 +715,7 @@ class User extends CI_Controller {
 			{
 				$callback=array(
 	        			'code' => '1300',
-	        			'msg' => 'json data invalid'
+	        			'message' => 'json data invalid'
 	        		);
 
 	        	echo(json_encode($callback));
@@ -728,7 +728,7 @@ class User extends CI_Controller {
 		// {
 		// 	$callback=array(
 	 //        			'code' => '1100',
-	 //        			'msg' => 'token do not exist'
+	 //        			'message' => 'token do not exist'
 	 //        		);
 
   //       	echo(json_encode($callback));
@@ -744,7 +744,7 @@ class User extends CI_Controller {
 	 //        {
 	 //        	$callback=array(
 		//         			'code' => '1000',
-		//         			'msg' => ' Authentication error'
+		//         			'message' => ' Authentication error'
 		//         		);
 
 	 //        	echo(json_encode($callback));
@@ -755,7 +755,7 @@ class User extends CI_Controller {
   //       {
   //       	$callback=array(
 		//         			'code' => '1200',
-		//         			'msg' => 'token is out of date'
+		//         			'message' => 'token is out of date'
 		//         		);
 
 	 //        	echo(json_encode($callback));
@@ -767,7 +767,7 @@ class User extends CI_Controller {
 	        {
 	        	$callback=array(
 		        			'code' => '1400',
-		        			'msg' => 'invalid params'
+		        			'message' => 'invalid params'
 		        		);
 
 	        	echo(json_encode($callback));
@@ -807,7 +807,7 @@ class User extends CI_Controller {
 			{
 				$callback=array(
 	        			'code' => '1300',
-	        			'msg' => 'json data invalid'
+	        			'message' => 'json data invalid'
 	        		);
 
 	        	echo(json_encode($callback));
@@ -823,7 +823,7 @@ class User extends CI_Controller {
 	        {
 	        	$callback=array(
 		        			'code' => '1400',
-		        			'msg' => 'invalid params'
+		        			'message' => 'invalid params'
 		        		);
 
 	        	echo(json_encode($callback));
@@ -886,7 +886,7 @@ class User extends CI_Controller {
 			{
 				$callback=array(
 	        			'code' => '1300',
-	        			'msg' => 'json data invalid'
+	        			'message' => 'json data invalid'
 	        		);
 
 	        	echo(json_encode($callback));
@@ -898,7 +898,7 @@ class User extends CI_Controller {
 	        {
 	        	$callback=array(
 		        			'code' => '1400',
-		        			'msg' => 'invalid params'
+		        			'message' => 'invalid params'
 		        		);
 
 	        	echo(json_encode($callback));
