@@ -854,7 +854,6 @@ class User extends CI_Controller {
 				);
 		echo(json_encode($callback));
 		return;
-
 		}
 		if ($code != $_SESSION['code']) {
 			$callback['status']='fail';
@@ -870,7 +869,7 @@ class User extends CI_Controller {
          		$callback['status']='fail';
          		$callback['response']=array(
          				'code' => '1500',
-         				'msg' => 'two password are not same'
+         				'message' => 'two password are not same'
          			);
          }
 
