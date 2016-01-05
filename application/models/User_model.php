@@ -136,7 +136,7 @@
       function isPhoneExists($cellphone)
       {
            
-        $query=$this->db->query("SELECT * FROM xl_account WHERE cellphone='{$cellphone}'");
+        $query=$this->db->query("SELECT * FROM xl_account WHERE cellphone='{$cellphone}' AND register_user=1");
 
         if ($query->num_rows()>0) {
             #if exist return true
@@ -365,13 +365,6 @@
         }
 
         return $user;
-
-
-
-
-         
-
-
           
           
         }

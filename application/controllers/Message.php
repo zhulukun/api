@@ -203,7 +203,19 @@ class Message extends CI_Controller {
 
 		$cellphone=$de_json['phone'];
 
-		
+		if (!$this->User_model->isPhoneExists($cellphone)) {
+			# code...
+
+			$callback['status']='fail';
+			$array['response']=array(
+					'code' => '1500',
+					'message' => 'cellphone does not exist'
+				);
+			$callback=array_merge($callback,$array);
+			echo json_encode($callback);
+
+			return;
+		}
 
 		$username='youli';
       	$password='youli123';

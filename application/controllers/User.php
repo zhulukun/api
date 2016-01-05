@@ -816,45 +816,10 @@ class User extends CI_Controller {
 
 		$de_json = (array)json_decode($json,TRUE);
 
-		// if (!array_key_exists('token', $de_json)) 
-		// {
-		// 	$callback=array(
-	 //        			'code' => '1100',
-	 //        			'msg' => 'token do not exist'
-	 //        		);
-
-  //       	echo(json_encode($callback));
-  //       	return;
-		// }
-
-  //       $token=$de_json['token'];
-
-  //       if (isset($_SESSION['token'])) 
-  //       {
-  //       	if ($token !== $_SESSION['token']) 
-	 //        {
-	 //        	$callback=array(
-		//         			'code' => '1000',
-		//         			'msg' => ' Authentication error'
-		//         		);
-
-	 //        	echo(json_encode($callback));
-	 //        	return;
-	 //        }
-  //       }
-  //       else
-  //       {
-  //       	$callback=array(
-		//         			'code' => '1200',
-		//         			'msg' => 'token is out of date'
-		//         		);
-
-	 //        	echo(json_encode($callback));
-	 //        	return;
-  //       }
 
 
-	 	if (!array_key_exists('phone', $de_json) || !array_key_exists('new_password', $de_json) ||  !array_key_exists('new_password2', $de_json)) 
+
+	 	if (!array_key_exists('phone', $de_json) || !array_key_exists('new_password', $de_json) ||  !array_key_exists('new_password2', $de_json) ||  !array_key_exists('code', $de_json)) 
 	        {
 	        	$callback=array(
 		        			'code' => '1400',
@@ -866,8 +831,40 @@ class User extends CI_Controller {
 	        }
 
         $phone = $de_json['phone'];
+        $code=$de_json['code'];
         $new_password = $de_json['new_password'];
         $new_password2 = $de_json['new_password2'];
+
+        if (!isset($_SESSION['code']) or !isset($_SESSION['phone'])) 
+		{
+			$callback['status']='fail';
+			$callback['response']=array(
+					'code' => '1500',
+					'message' => 'code is out of date'
+				);
+			
+			echo(json_encode($callback));
+			return;
+		}
+		if ($phone != $_SESSION['phone']) {
+			$callback['status']='fail';
+			$callback['response']=array(
+					'code' => '1500',
+					'message' => 'phone error'
+				);
+		echo(json_encode($callback));
+		return;
+
+		}
+		if ($code != $_SESSION['code']) {
+			$callback['status']='fail';
+			$callback['response']=array(
+					'code' => '1500',
+					'message' => 'code error'
+				);
+			echo(json_encode($callback));
+			return;
+		}
 
          if ($new_password !== $new_password2) {
          		$callback['status']='fail';
