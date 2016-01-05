@@ -899,7 +899,8 @@ class User extends CI_Controller {
 
 		$de_json = (array)json_decode($json,TRUE);
 
-
+		print_r($de_json);
+		die();
     if (!array_key_exists('operator_id', $de_json) || !array_key_exists('nickname', $de_json)) 
 	        {
 	        	$callback=array(
@@ -910,6 +911,7 @@ class User extends CI_Controller {
 	        	echo(json_encode($callback));
 	        	return;
 	        }
+
 	    $operator_id=$de_json['operator_id'];	
 	    $nickname=$de_json['nickname'];
         $result = $this->User_model->search_user($operator_id,$nickname);
