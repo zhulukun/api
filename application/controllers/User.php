@@ -455,7 +455,7 @@ class User extends CI_Controller {
   //       }
 
 
-	 	if (!array_key_exists('account_id', $de_json) || !array_key_exists('contacts', $de_json)) 
+	 	if (!array_key_exists('account_id', $de_json) || !array_key_exists('contacts', $de_json) ||!array_key_exists('email', $de_json)) 
 	        {
 	        	$callback=array(
 		        			'code' => '1400',
@@ -500,7 +500,7 @@ class User extends CI_Controller {
 						*
 						*/
 
-						if (!($this->User_model->isPhoneExists($user_info[$i]['phone']))) 
+						if (!($this->User_model->is_phone_exists($user_info[$i]['phone']))) 
 						{
 						    $id=md5(uniqid(md5(microtime(true)),true));
 						  //  $user_info=(array)json_decode($friends_info,TRUE);
@@ -564,7 +564,7 @@ class User extends CI_Controller {
 						*
 						*/
 						//如果通讯录增加了新的电话号码，上传到服务器插入
-						if (!($this->User_model->isPhoneExists($phone))) 
+						if (!($this->User_model->is_phone_exists($phone))) 
 						{
 						    $id=md5(uniqid(md5(microtime(true)),true));
 	

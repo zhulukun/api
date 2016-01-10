@@ -146,6 +146,19 @@
           return FALSE;  
       }
 
+      //查看是否有此手机号
+      function is_phone_exists($cellphone)
+      {
+           
+        $query=$this->db->query("SELECT * FROM xl_account WHERE cellphone='{$cellphone}'");
+
+        if ($query->num_rows()>0) {
+            #if exist return true
+            return TRUE;
+          }
+
+          return FALSE;  
+      }
       /**
        * insert unregister user into xl_account
        * @param mixed $arg1 id cellphone nickname email
