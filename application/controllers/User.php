@@ -467,7 +467,7 @@ class User extends CI_Controller {
 	        }	
 
 		$account_id=$de_json['account_id'];
-		$friends_info=json_encode($de_json['contacts']);
+		$friends_info=$de_json['contacts'];
 		/**
 		 * if the user's friends is not added
 		 *
