@@ -607,6 +607,216 @@ class User extends CI_Controller {
 	    }
 	}
 
+
+	public function add_friends_android()
+	{
+
+		$this->load->model('FriendInfo_model');
+		$this->load->model('FriendRelation_model');
+
+		$json=file_get_contents("php://input");
+		if(is_null(json_decode($json)))
+			{
+				$callback=array(
+	        			'code' => '1300',
+	        			'message' => 'json data invalid'
+	        		);
+
+	        	echo(json_encode($callback));
+	        	return;
+			}
+
+		$de_json = (array)json_decode($json,TRUE);
+
+		// if (!array_key_exists('token', $de_json)) 
+		// {
+		// 	$callback=array(
+	 //        			'code' => '1100',
+	 //        			'message' => 'token do not exist'
+	 //        		);
+
+  //       	echo(json_encode($callback));
+  //       	return;
+		// }
+
+       
+  //       $token=$de_json['token'];
+
+  //       if (isset($_SESSION['token'])) 
+  //       {
+  //       	if ($token !== $_SESSION['token']) 
+	 //        {
+	 //        	$callback=array(
+		//         			'code' => '1000',
+		//         			'message' => ' Authentication error'
+		//         		);
+
+	 //        	echo(json_encode($callback));
+	 //        	return;
+	 //        }
+  //       }
+  //       else
+  //       {
+  //       	$callback=array(
+		//         			'code' => '1200',
+		//         			'message' => 'token is out of date'
+		//         		);
+
+	 //        	echo(json_encode($callback));
+	 //        	return;
+  //       }
+
+
+	 	if (!array_key_exists('account_id', $de_json) || !array_key_exists('contacts', $de_json)) 
+	        {
+	        	$callback=array(
+		        			'code' => '1400',
+		        			'message' => 'invalid params'
+		        		);
+
+	        	echo(json_encode($callback));
+	        	return;
+	        }	
+
+		$account_id=$de_json['account_id'];
+		$friends_info=$de_json['contacts'];
+		/**
+		 * if the user's friends is not added
+		 *
+		 */
+	    if (!($this->FriendInfo_model->is_friends_added($account_id))) 
+	    {
+
+	    	$id=md5(uniqid(md5(microtime(true)),true));
+	    	
+	    	if($this->FriendInfo_model->add_friends($id,$account_id,$friends_info))
+				{	
+					$user_info=(array)json_decode($friends_info,TRUE);
+					for ($i=0; $i < count($user_info); $i++) { 
+
+							$phone=$user_info[$i]['phone'];
+						    $name=$user_info[$i]['name'];
+						    $email=$user_info[$i]['email'];
+
+						if (!$this->FriendRelation_model->is_friend_exist($phone,$account_id)) 
+						{
+							$this->FriendRelation_model->insert_friend_info($phone,$name,$email,$account_id);
+						}
+
+						/**
+						*
+						* judge if the xl_account has the user or not
+						* if not insert into the user into the table
+						* if exits don't insert
+						*
+						*/
+
+						if (!($this->User_model->is_phone_exists($user_info[$i]['phone']))) 
+						{
+						    $id=md5(uniqid(md5(microtime(true)),true));
+						  //  $user_info=(array)json_decode($friends_info,TRUE);
+
+							$this->User_model->insert_unregister_user($id,$phone);						    
+						}
+
+					}
+					//$token=md5(uniqid(md5(microtime(true)),true));
+					// $this->session->set_userdata('token',$_SESSION['token'],7*24*60*60);
+					$callback['status']='ok';
+					
+					echo json_encode($callback);
+
+					return;
+				}
+			else
+			{
+				$callback['status']='fail';
+
+				$callback['response']=array(
+							
+							'code' => '1500',
+							'message' => 'add friends fail'
+						);
+
+						echo json_encode($callback);
+
+						return;
+			}
+
+	    }
+
+	    else
+	    {
+
+		    /**
+		     * if the user's friends has been added into the database
+		     *
+		     */
+		    if($this->FriendInfo_model->update_friends($account_id,$friends_info))
+				{	
+					$user_info=(array)json_decode($friends_info,TRUE);
+					// print_r($user_info);
+					// die();
+					for ($i=0; $i < count($user_info); $i++) { 
+						
+						 $phone=$user_info[$i]['phone'];
+						 $name=$user_info[$i]['name'];
+				         $email=$user_info[$i]['email'];
+
+				         if (!$this->FriendRelation_model->is_friend_exist($phone,$account_id)) 
+						{
+							$this->FriendRelation_model->insert_friend_info($phone,$name,$email,$account_id);
+						}
+						/**
+						*
+						* judge if the xl_account has the user or not
+						* if not insert into the user into the table
+						* if exits don't insert
+						*
+						*/
+						//如果通讯录增加了新的电话号码，上传到服务器插入
+						if (!($this->User_model->is_phone_exists($phone))) 
+						{
+						    $id=md5(uniqid(md5(microtime(true)),true));
+	
+							$this->User_model->insert_unregister_user($id,$phone);
+						}
+						else
+						{
+							if (!$this->FriendRelation_model->is_friend_exist($phone,$account_id)) 
+							{
+								$this->FriendRelation_model->insert_friend_info($phone,$name,$email,$account_id);
+							}
+							//如果通信录中好友的姓名，邮箱被更改了，则更新数据库
+							if ($this->FriendRelation_model->is_local_update($phone,$name,$email,$account_id))
+							{
+								$this->FriendRelation_model->update_friend_info($phone,$name,$email,$account_id);
+							}
+						}
+
+					}
+					// $this->session->set_userdata('token',$_SESSION['token'],7*24*60*60);
+					$callback['status']='ok';
+					echo json_encode($callback);
+					return;
+				}
+			else
+			{
+				$callback['status']='fail';
+
+				$callback['response']=array(
+							
+							'code' => '1500',
+							'message' => 'update friends fail'
+						);
+
+						echo json_encode($callback);
+
+						return;
+			}
+	    }
+	}
+
 	/**
 	 *
 	 *	获取好友信息接口
