@@ -455,7 +455,7 @@ class User extends CI_Controller {
   //       }
 
 
-	 	if (!array_key_exists('account_id', $de_json) || !array_key_exists('contacts', $de_json) ||!array_key_exists('email', $de_json)) 
+	 	if (!array_key_exists('account_id', $de_json) || !array_key_exists('contacts', $de_json)) 
 	        {
 	        	$callback=array(
 		        			'code' => '1400',
