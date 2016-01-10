@@ -510,7 +510,7 @@ class User extends CI_Controller {
 
 					}
 					//$token=md5(uniqid(md5(microtime(true)),true));
-					$this->session->set_userdata('token',$_SESSION['token'],7*24*60*60);
+					// $this->session->set_userdata('token',$_SESSION['token'],7*24*60*60);
 					$callback['status']='ok';
 					
 					echo json_encode($callback);
