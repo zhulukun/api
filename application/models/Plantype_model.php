@@ -78,4 +78,38 @@
             return FALSE;
         }
 
+        //获取唯一分类信息
+        function select_unique_category($id)
+        {
+            $query=$this->db->query("SELECT * FROM xl_plantype where id={$id}");
+            $arr = array();
+            foreach($query->result_array() as $row)
+            {
+                array_push($arr,$row);
+            }
+
+            return $arr;
+        }
+
+        //获取ppt分类下的文章
+        function select_ppt_info()
+        {
+
+            $query=$this->db->query("SELECT xl_plan.id,xl_plan.title,xl_plan.imagepath FROM xl_plan,xl_plantype WHERE xl_plantype.category_en='ppt' AND xl_plan.category_id=xl_plantype.id");
+            $arr = array();
+            foreach($query->result_array() as $row)
+            {
+                array_push($arr,$row);
+            }
+
+            return $arr;
+        }
+
+        //根据分类别名获取分类id
+        // function get_id_by_categoryen($category_en)
+        // {
+        //     $query=$this->db->query("SELECT ");
+        // }
+
+
     }

@@ -199,6 +199,7 @@ class Impress_model extends CI_Model {
         return FALSE;
     }
 
+    //
     function get_impress_details($target_id)
     {
         $query=$this->db->query("SELECT distinct operator_id from xl_impress where target_id='{$target_id}'");
@@ -287,7 +288,7 @@ class Impress_model extends CI_Model {
         }
         return $arr;
     }
-
+    
     function get_preset_impress_character()
     {
          $query = $this->db->query("SELECT preset_impress FROM xl_presetimpress WHERE impresstype=2");

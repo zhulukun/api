@@ -10,6 +10,110 @@
         
         }
 
+        //添加方案
+        function add_plan($id,$title,$content,$status,$author_id,$imagepath,$category_id)
+        {
+            $query=$this->db->query("INSERT INTO xl_plan(id,title,content,status,author_id,imagepath,category_id) VALUES('{$id}','{$title}','{$content}','{$status}','{$author_id}','{$imagepath}',{$category_id})");
+            if ($this->db->affected_rows()>0) 
+            {
+                return TRUE;
+            }
+            return  FALSE;
+        }
+
+        //关联标签与方案
+
+        function add_artical_label($id,$plan_id,$label)
+        {
+            $query=$this->db->query("INSERT INTO xl_planreflabel(id,plan_id,label) VALUES('{$id}','{$plan_id}','{$label}')");
+            if ($this->db->affected_rows()>0) {
+                return TRUE;
+            }
+            return FALSE;
+        }
+
+        //删除方案
+        function delete_plan($id)
+        {
+            $query=$this->db->query("DELETE FROM xl_plan WHERE id='{$id}'");
+            if ($this->db->affected_rows()>0) 
+            {
+                return TRUE;
+            }
+            return  FALSE;
+        }
+
+        //修改方案
+        function update_plan($id,$title,$content,$status,$author_id,$cover_image_id,$category_id)
+        {
+            $query=$this->db->query("UPDATE xl_plan SET title='{$title}',content='{$content}',status='{$status}',author_id='{$author_id}',cover_image_id='{$cover_image_id}',category_id={$category_id} WHERE id='{$id}'");
+            if ($this->db->affected_rows()>0) 
+            {
+                return TRUE;
+            }
+            return FALSE;
+        }
+
+        //获取某个分类下的所有方案
+
+        function get_cat_plans($cat_id)
+        {
+            $query_cat=$this->db->query("SELECT * FROM xl_plan WHERE category_id='{$cat_id}'");
+            $plan_arr=array();
+            foreach($query_cat->result_array() as $row)
+            {
+                array_push($plan_arr,$row);
+            }
+
+            if (count($plan_arr)==0) 
+            {
+                return NULL;
+            }
+
+            for ($i=0; $i <count($plan_arr); $i++) 
+            { 
+                $plan_id=$plan_arr[$i]['id'];
+                $plankeyword_arr=array();
+                foreach($query_plankeyword->result_array() as $row)
+                {
+                    array_push($plankeyword_arr,$row);
+                }
+                $keyword['lables']=$plankeyword_arr;
+                array_merge($plan_arr[$i],$keyword);
+            }
+            return $plan_arr;
+        }
+
+        //获取所有方案
+        function get_all_plan($cat_id)
+        {
+            $query_cat=$this->db->query("SELECT * FROM xl_plan");
+            $plan_arr=array();
+            foreach($query_cat->result_array() as $row)
+            {
+                array_push($plan_arr,$row);
+            }
+
+            if (count($plan_arr)==0) 
+            {
+                return NULL;
+            }
+
+            for ($i=0; $i <count($plan_arr); $i++) 
+            { 
+                $plan_id=$plan_arr[$i]['id'];
+                $query_plankeyword=$this->db->query("SELECT label FROM xl_planlabel WHERE plan_id='{$plan_id}'");
+                $plankeyword_arr=array();
+                foreach($query_plankeyword->result_array() as $row)
+                {
+                    array_push($plankeyword_arr,$row);
+                }
+                $keyword['lables']=$plankeyword_arr;
+                array_merge($plan_arr[$i],$keyword);
+            }
+            return $plan_arr;
+        }
+
         /**
          * count plans int the database
          *
@@ -159,4 +263,56 @@
             
             return $arr;
         }
+
+        //获取所有方案分类
+        function get_all_cat()
+        {
+            $query=$this->db->query("SELECT id,category_cn FROM xl_plantype");
+
+            $arr=array();
+
+            foreach($query->result_array() as $row)
+            {
+                array_push($arr,$row);
+            }
+
+            return $arr;
+
+        }
+
+        //获取方案详情
+        function get_plan_info($plan_id)
+        {
+            $query=$this->db->query("SELECT xl_plan.title,xl_plan.content,xl_plan.publish_date,xl_plan.imagepath,xl_account.nickname FROM xl_plan,xl_account WHERE xl_plan.id='{$plan_id}' AND xl_account.id=xl_plan.author_id");
+            $arr=array();
+
+            foreach($query->result_array() as $row)
+            {
+                array_push($arr,$row);
+            }
+
+            return $arr;
+
+        }
+
+        //获取方案下的标签
+        function get_plan_label($plan_id)
+        {
+            $query=$this->db->query("SELECT label FROM xl_planreflabel WHERE plan_id='{$plan_id}'");
+            $arr=array();
+
+            foreach($query->result_array() as $row)
+            {
+                array_push($arr,$row);
+            }
+
+            return $arr;
+
+        }
+
+
+
+
+
+
     }

@@ -364,7 +364,7 @@ $config['encryption_key'] = '';
 */
 $config['sess_driver'] = 'files';
 $config['sess_cookie_name'] = 'ci_session';
-$config['sess_expiration'] = 720000;
+$config['sess_expiration'] = 72000000;
 $config['sess_save_path'] = '/Library/WebServer/Documents/api/session/';
 $config['sess_match_ip'] = FALSE;
 $config['sess_time_to_update'] = 300;

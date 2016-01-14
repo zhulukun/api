@@ -147,7 +147,7 @@
       }
 
       //查看是否有此手机号
-      function is_phone_exists($cellphone)
+      function ($cellphone)
       {
            
         $query=$this->db->query("SELECT * FROM xl_account WHERE cellphone='{$cellphone}'");

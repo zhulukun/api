@@ -289,7 +289,7 @@ class Impress extends CI_Controller
      */
     public function get_impress_details()
     {
-         $json=file_get_contents("php://input");
+        $json=file_get_contents("php://input");
         if(is_null(json_decode($json)))
             {
                 $callback=array(

@@ -110,20 +110,32 @@
    </ol>   
    <!-- 轮播（Carousel）项目 -->
    <div class="carousel-inner">
-      <div class="item active">
-         <img src="<?php echo base_url();?>images/slide1.png" class="img-responsive" alt="First slide">
-         <div class="carousel-caption">标题 1</div>
-      </div>
-      <div class="item">
-         <img src="<?php echo base_url();?>images/slide2.png" class="img-responsive" alt="Second slide">
-         <div class="carousel-caption">标题 2</div>
-      </div>
-      <div class="item">
-         <img src="<?php echo base_url();?>images/slide1.png" class="img-responsive" alt="First slide">
+            <?php 
+            for($i=0;$i<count($pptinfo);$i++)
+            {
+              $path=$pptinfo[$i]['imagepath'];
+              $url=base_url().'index.php/planinfo/index/plan_id/'.$pptinfo[$i]['id'];
+              $title=$pptinfo[$i]['title'];
+              if ($i == 0) {
+                echo  '<div class="item active">
+         <img src='.$path.' class="img-responsive" alt="First slide">
+         <div class="carousel-caption"><a href='.$url.'>'.$title.'</a></div>
+      </div>';
+              }
+              else
+              {
+                 echo  '<div class="item">
+         <img src='.$path.' class="img-responsive" alt="First slide">
+         <div class="carousel-caption"><a href='.$url.'>'.$title.'</a></div>
+      </div>';
+              }
+            }
 
-         <div class="carousel-caption">标题 3</div>
-      </div>
-   </div>
+
+
+            ?>
+
+       </div>
    <!-- 轮播（Carousel）导航 -->
    <a class="carousel-control left" href="#myCarousel" 
       data-slide="prev">&lsaquo;</a>
@@ -135,11 +147,16 @@
     <!-- START THE NAVBAR -->
     <div id="zlight-nav" class="navbar-wrapper topnav" style=" width:100%;">
         <ul class="nav nav-tabs" style="background: #FFFFFF;">
-   <li class="active"><a href="#">最新</a></li>
-   <li ><a href="#">送朋友</a></li>
-   <li><a href="#">送家人</a></li>
-   <li><a href="#">送领导</a></li>
-   <li><a href="#">送病人</a></li>
+            <li class="active"><a href="#"><?php echo $new;?></a></li>
+
+        <?php 
+            for ($i=0; $i < count($info); $i++) { 
+
+                  echo '<li><a href="#">'.$info[$i]['category_cn'].'</a></li>';
+                
+            }
+
+        ?>
 
   </ul>
     </div>

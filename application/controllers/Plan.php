@@ -10,9 +10,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Plan extends CI_Controller
 {
-    /**
-     * 获取礼物方案总数量
-     */
+    
     function __construct()
     {
 
@@ -22,8 +20,162 @@ class Plan extends CI_Controller
         $this->load->model('Plan_model');
         $this->load->library('session');
                
+    }
+
+    public function add_plan()
+    {
+        $json=file_get_contents("php://input");
+        if(is_null(json_decode($json)))
+            {
+                $callback=array(
+                        'code' => '1300',
+                        'msg' => 'json data invalid'
+                    );
+
+                echo(json_encode($callback));
+                return;
+            }
+
+        $de_json = (array)json_decode($json,TRUE);
+        if (!array_key_exists('title', $de_json) || !array_key_exists('content', $de_json) || !array_key_exists('status', $de_json) || !array_key_exists('author_id', $de_json) || !array_key_exists('imagepath', $de_json) || !array_key_exists('category_id', $de_json) || !array_key_exists('labels', $de_json) ) 
+            {
+                $callback=array(
+                            'code' => '1400',
+                            'msg' => 'invalid params'
+                        );
+
+                echo(json_encode($callback));
+                return;
+            }
+        $plan_id=md5(uniqid(md5(microtime(true)),true));
+        $title=$de_json['title'];
+        $content=$de_json['content'];
+        $status=$de_json['status'];
+        $author_id=$de_json['author_id'];
+        $imagepath=$de_json['imagepath'];
+        $category_id=$de_json['category_id'];
+
+        $labels=$de_json['labels'];
+
+        $arr_label=explode(",", $labels);
+
+        
+
+        if ($this->Plan_model->add_plan($plan_id,$title,$content,$status,$author_id,$imagepath,$category_id)) 
+        {
+            for ($i=0; $i < count($arr_label); $i++) 
+            { 
+                if ($arr_label[$i] == '') 
+                {
+                       continue;
+                }
+               $plan_label_id=md5(uniqid(md5(microtime(true)),true));
+               $this->Plan_model->add_artical_label($plan_label_id,$plan_id,$arr_label[$i]);
+            }
+        
+            $callback['status']='ok';
+            echo(json_encode($callback));
+            return;
+        }
+        $callback['status']='fail';
+        $callback['response']=array(
+                'code' => '1500',
+                'message' => 'add plan fail'
+            );
+        echo(json_encode($callback));
+        return;
+    }
+    public function delete_plans()
+    {
+         $json=file_get_contents("php://input");
+        if(is_null(json_decode($json)))
+            {
+                $callback=array(
+                        'code' => '1300',
+                        'msg' => 'json data invalid'
+                    );
+
+                echo(json_encode($callback));
+                return;
+            }
+
+        $de_json = (array)json_decode($json,TRUE);
+        if (!array_key_exists('id', $de_json)) 
+            {
+                $callback=array(
+                            'code' => '1400',
+                            'msg' => 'invalid params'
+                        );
+
+                echo(json_encode($callback));
+                return;
+            }
+        $id=$de_json['id'];
+        if ($this->Plan_model->delete_plan($id)) 
+        {
+            $callback['status']='ok';
+            echo(json_encode($callback));
+            return;
+        }
+
+        $callback['status']='fail';
+        $callback['response']=array(
+                'code' => '1500',
+                'message' => 'delete plan fail'
+            );
+        echo(json_encode($callback));
+        return;
+    }
+
+    //获取某个分类下的所有方案
+    public function get_cat_plans()
+    {
+        $json=file_get_contents("php://input");
+        if(is_null(json_decode($json)))
+            {
+                $callback=array(
+                        'code' => '1300',
+                        'msg' => 'json data invalid'
+                    );
+
+                echo(json_encode($callback));
+                return;
+            }
+
+        $de_json = (array)json_decode($json,TRUE);
+        if (!array_key_exists('cat_id', $de_json)) 
+            {
+                $callback=array(
+                            'code' => '1400',
+                            'msg' => 'invalid params'
+                        );
+
+                echo(json_encode($callback));
+                return;
+            }
+        $cat_id=$de_json['cat_id'];
+        
+        $arr=$this->Plan_model->get_cat_plans($cat_id);
+
+        if (count($arr)==0)
+        {
+            $callback['status']='fail';
+            $callback['response']=array(
+                    'code' => '1500',
+                    'message' => 'delete plan fail'
+                );
+            echo(json_encode($callback));
+            return;
+        }
+        $callback['status']='ok';
+        $callback['response']=array(
+                'plan' => $arr
+            );
+        echo(json_encode($callback));
+        return;
 
     }
+
     public function count_plans()
     {
 
@@ -295,4 +447,14 @@ class Plan extends CI_Controller
         }
         
     }
+
+    //获取所有分类
+    function get_all_cat()
+    {
+        $arr_plantype=$this->Plan_model->get_all_cat();
+        echo json_encode($arr_plantype);
+        return;
+    }
+
+    
 }

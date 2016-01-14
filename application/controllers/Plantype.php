@@ -38,7 +38,8 @@ class Plantype extends CI_Controller
 
         if (!array_key_exists('category_cn', $de_json) || !array_key_exists('category_en', $de_json) || !array_key_exists('description', $de_json)) 
             {
-                $callback=array(
+                $callback['status']='fail';
+                $callback['response']=array(
                             'code' => '1400',
                             'msg' => 'invalid params'
                         );
@@ -154,25 +155,25 @@ class Plantype extends CI_Controller
         $category_en=$de_json['category_en'];
         $description=$de_json['description'];
 
-        if ($this->Plantype_model->is_exist_cn($category_cn)) {
-            $callback['status']='fail';
-            $callback['response']=array(
-                    'code' => '1500',
-                    'message' => '中文分类名已经存在'
-                );
-            echo(json_encode($callback));
-            return;
-        }
+        // if ($this->Plantype_model->is_exist_cn($category_cn)) {
+        //     $callback['status']='fail';
+        //     $callback['response']=array(
+        //             'code' => '1500',
+        //             'message' => '中文分类名已经存在'
+        //         );
+        //     echo(json_encode($callback));
+        //     return;
+        // }
 
-        if ($this->Plantype_model->is_exist_en($category_en)) {
-            $callback['status']='fail';
-            $callback['response']=array(
-                    'code' => '1500',
-                    'message' => '英文分类名已经存在'
-                );
-            echo(json_encode($callback));
-            return;
-        }
+        // if ($this->Plantype_model->is_exist_en($category_en)) {
+        //     $callback['status']='fail';
+        //     $callback['response']=array(
+        //             'code' => '1500',
+        //             'message' => '英文分类名已经存在'
+        //         );
+        //     echo(json_encode($callback));
+        //     return;
+        // }
         if($this->Plantype_model->update_category($id,$category_cn,$category_en,$description))
         {
             $callback['status']='ok';
@@ -188,6 +189,15 @@ class Plantype extends CI_Controller
     public function select_category()
     {
         $arr=$this->Plantype_model->select_category();
+        echo(json_encode($arr));
+        return;
+    }
+
+    //查找某个分类下的所有方案
+    public function select_unique_category()
+    {
+        $id=$this->uri->segment(4,0);
+        $arr=$this->Plantype_model->select_unique_category($id);
         echo(json_encode($arr));
         return;
     }
