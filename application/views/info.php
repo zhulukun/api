@@ -88,6 +88,7 @@
     </div>
     <div>
       <img src="<?php echo $imagepath;?>" class="img-responsive" style="width:100%">
+      <input type="hidden" id="imagepath" value="<?php echo $imagepath;?>"/>
     </div>
     <div class="info">
       <div class="title"><?php echo $title;?></div>

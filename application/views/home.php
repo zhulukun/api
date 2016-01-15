@@ -26,6 +26,15 @@
     <script>
     $(document).ready(function(){
       $('#zlight-nav').zlightMenu();
+
+      $('.nav-tabs li').click(function() {
+                
+                $('.nav-tabs li').removeClass('active');
+                $(this).addClass('active');
+
+              });
+
+
     });
   </script>
      <script type="text/javascript">
@@ -147,12 +156,12 @@
     <!-- START THE NAVBAR -->
     <div id="zlight-nav" class="navbar-wrapper topnav" style=" width:100%;">
         <ul class="nav nav-tabs" style="background: #FFFFFF;">
-            <li class="active"><a href="#"><?php echo $new;?></a></li>
+            <li class="active"><a href="<?php echo base_url();?>index.php/home"><?php echo $new;?></a></li>
 
         <?php 
             for ($i=0; $i < count($info); $i++) { 
 
-                  echo '<li><a href="#">'.$info[$i]['category_cn'].'</a></li>';
+                  echo '<li><a href="'.base_url().'index.php/home/index/cat/'.$info[$i]['id'].'">'.$info[$i]['category_cn'].'</a></li>';
                 
             }
 
