@@ -1119,6 +1119,8 @@ class User extends CI_Controller {
 	    $operator_id=$de_json['operator_id'];	
 	    $nickname=$de_json['nickname'];
         $result = $this->User_model->search_user($operator_id,$nickname);
+        // print_r($result);
+        // die();
         if (count($result)>0) 
         {
         	$callback=array(

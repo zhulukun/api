@@ -7,7 +7,7 @@ class Plantype extends CI_Controller
 {
 
     /**
-     *  方案收藏
+     *  方案类型
      */
     function __construct()
     {
