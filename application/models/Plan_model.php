@@ -372,6 +372,52 @@
             return FALSE;
         }
 
+        //获取方案评论
+        function get_plan_comments($plan_id)
+        {
+            $query=$this->db->query("SELECT xl_plancomment.content,xl_account.nickname,xl_account.id FROM xl_plancomment,xl_account WHERE xl_plancomment.account_id=xl_account.id AND xl_plancomment.plan_id='{$plan_id}'");
+            
+
+            $arr=array();
+
+            foreach($query->result_array() as $row)
+            {
+                array_push($arr,$row);
+            }
+
+            if (count($arr) == 0) {
+                return $arr;
+            }
+            for($i=0;$i<count($arr);$i++)
+            {
+                $account_id=$arr[$i]['id'];
+                $query_avatar_url=$this->db->query("SELECT avatar_url AS avatar_url FROM xl_avatar WHERE account_id='{$account_id}'");
+
+                if ($query_avatar_url->num_rows()>0) 
+                  {
+                            $arr_avatar = array();
+
+                            foreach($query_avatar_url->result_array() as $row)
+                            {
+                                  array_push($arr_avatar,$row);
+                            }
+
+                            $user_avatar=$arr_avatar[0];
+
+                  }
+                 else
+                    {
+                        $user_avatar=array('avatar_url' => '', );
+
+                    }
+
+                $arr[$i]['avatar_url']=$user_avatar['avatar_url'];
+
+            }
+            
+            return $arr;
+        }
+
 
 
     }

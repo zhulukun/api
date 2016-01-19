@@ -642,6 +642,44 @@ class Plan extends CI_Controller
 
     }
 
+    //获取方案评论列表
+    function get_plan_comments()
+    {
+        $json=file_get_contents("php://input");
+        if(is_null(json_decode($json)))
+            {
+                $callback=array(
+                        'code' => '1300',
+                        'msg' => 'json data invalid'
+                    );
+
+                echo(json_encode($callback));
+                return;
+            }
+
+        $de_json = (array)json_decode($json,TRUE);
+ 
+        if (!array_key_exists('plan_id', $de_json)) 
+            {
+                $callback=array(
+                            'code' => '1400',
+                            'msg' => 'invalid params'
+                        );
+
+                echo(json_encode($callback));
+                return;
+            }
+
+        $plan_id=$de_json['plan_id'];
+        $arr_comments=$this->Plan_model->get_plan_comments($plan_id);
+
+        $callback['status']='ok';
+        $callback['response']=$arr_comments;
+        echo json_encode($callback);
+        return;
+
+    }
+
 
 
 
