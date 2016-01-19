@@ -420,11 +420,228 @@ class Plan extends CI_Controller
         return;
     }
 
+    //get all cats for android and ios
+    function get_all_cats()
+    {
+        $arr_plantype=$this->Plan_model->get_all_cat();
+        $callback['status']='ok';
+        $callback['response']=$arr_plantype;
+        echo json_encode($callback);
+        return;
+    }
+
+    //获取某个分类下的方案   包含方案title 方案ID 方案封面图片
+
+    function get_cat_plan()
+    {
+        $json=file_get_contents("php://input");
+        if(is_null(json_decode($json)))
+            {
+                $callback=array(
+                        'code' => '1300',
+                        'msg' => 'json data invalid'
+                    );
+
+                echo(json_encode($callback));
+                return;
+            }
+
+        $de_json = (array)json_decode($json,TRUE);
+ 
+
+        if (!array_key_exists('cat_id', $de_json) ) 
+            {
+                $callback=array(
+                            'code' => '1400',
+                            'msg' => 'invalid params'
+                        );
+
+                echo(json_encode($callback));
+                return;
+            }
+
+        $cat_id = $de_json['cat_id'];
+
+        $arr_plan=$this->Plan_model->get_cat_plan($cat_id);
+
+        if (count($arr_plan) == 0) 
+        {
+            $callback['status']='fail';
+            echo json_encode($callback);
+            return;
+        }
+
+        $callback['status'] = 'ok';
+        $callback['response'] = $arr_plan;
+        echo json_encode($callback);
+        return;
+    }
+
+    //获取最新方案列表
+    function get_newest_plan()
+    {
+        $arr_plan=$this->Plan_model->get_newest_plan();
+        if (count($arr_plan) == 0) 
+        {
+            $callback['status']='fail';
+            echo json_encode($callback);
+            return;
+        }
+        $callback['status'] = 'ok';
+        $callback['response'] = $arr_plan;
+        echo json_encode($callback);
+        return;
+    }
+
+    //获取具体方案内容
+    function get_plan_content()
+    {
+        $json=file_get_contents("php://input");
+        if(is_null(json_decode($json)))
+            {
+                $callback=array(
+                        'code' => '1300',
+                        'msg' => 'json data invalid'
+                    );
+
+                echo(json_encode($callback));
+                return;
+            }
+
+        $de_json = (array)json_decode($json,TRUE);
+ 
+
+        if (!array_key_exists('plan_id', $de_json) ) 
+            {
+                $callback=array(
+                            'code' => '1400',
+                            'msg' => 'invalid params'
+                        );
+
+                echo(json_encode($callback));
+                return;
+            }
+
+        $plan_id = $de_json['plan_id'];
+
+        $arr_plan_info=$this->Plan_model->get_plan_info($plan_id);
+        if (count($arr_plan_info) == 0) {
+            $callback['status']='fail';
+            echo json_encode($callback);
+            return;
+        }
+        $arr_plan_label=$this->Plan_model->get_plan_label($plan_id);
+        $arr_plan_info[0]['label']=$arr_plan_label;
+        $callback['status']='ok';
+        $callback['response']=$arr_plan_info;
+        echo json_encode($callback);
+        return;
+
+
+    }
+
     //方案评论接口
     function comment_plan()
     {
+        $json=file_get_contents("php://input");
+        if(is_null(json_decode($json)))
+            {
+                $callback=array(
+                        'code' => '1300',
+                        'msg' => 'json data invalid'
+                    );
+
+                echo(json_encode($callback));
+                return;
+            }
+
+        $de_json = (array)json_decode($json,TRUE);
+ 
+
+        if (!array_key_exists('plan_id', $de_json) || !array_key_exists('account_id', $de_json) || !array_key_exists('content', $de_json)) 
+            {
+                $callback=array(
+                            'code' => '1400',
+                            'msg' => 'invalid params'
+                        );
+
+                echo(json_encode($callback));
+                return;
+            }
+
+        $id=md5(uniqid(md5(microtime(true)),true));
+        $plan_id = $de_json['plan_id'];
+        $account_id=$de_json['account_id'];
+        $content=$de_json['content'];
+
+        $arr_comment['id']=$id;
+        $arr_comment['plan_id']=$plan_id;
+        $arr_comment['account_id']=$account_id;
+        $arr_comment['content']=$content;
+        if($this->Plan_model->comment_plan($arr_comment))
+        {
+            $this->Plan_model->add_comment_count($plan_id);
+            $callback['status']='ok';
+            echo json_encode($callback);
+            return;
+        }
+
+        $callback['status']='fail';
+        echo json_encode($callback);
+        return;
+
 
     }
+
+    //方案点赞接口
+    function vote_plan()
+    {
+        $json=file_get_contents("php://input");
+        if(is_null(json_decode($json)))
+            {
+                $callback=array(
+                        'code' => '1300',
+                        'msg' => 'json data invalid'
+                    );
+
+                echo(json_encode($callback));
+                return;
+            }
+
+        $de_json = (array)json_decode($json,TRUE);
+ 
+
+        if (!array_key_exists('plan_id', $de_json) || !array_key_exists('account_id', $de_json)) 
+            {
+                $callback=array(
+                            'code' => '1400',
+                            'msg' => 'invalid params'
+                        );
+
+                echo(json_encode($callback));
+                return;
+            }
+        $id=md5(uniqid(md5(microtime(true)),true));
+        $plan_id = $de_json['plan_id'];
+        $account_id=$de_json['account_id'];
+
+        $arr_vote['id']=$id;
+        $arr_vote['plan_id']=$plan_id;
+        $arr_vote['account_id']=$account_id;
+        if($this->Plan_model->vote_plan($arr_vote))
+        {
+            $this->Plan_model->add_vote_count($plan_id);
+            $callback['status']='ok';
+            echo json_encode($callback);
+            return;
+        }
+
+        $callback['status']='fail';
+        echo json_encode($callback);
+        return;
+
+    }
+
 
 
 

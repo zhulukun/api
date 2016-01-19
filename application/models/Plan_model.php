@@ -283,7 +283,7 @@
         //获取方案详情
         function get_plan_info($plan_id)
         {
-            $query=$this->db->query("SELECT xl_plan.title,xl_plan.content,xl_plan.publish_date,xl_plan.imagepath,xl_account.nickname FROM xl_plan,xl_account WHERE xl_plan.id='{$plan_id}' AND xl_account.id=xl_plan.author_id");
+            $query=$this->db->query("SELECT xl_plan.title,xl_plan.content,xl_plan.publish_date,xl_plan.imagepath,xl_account.nickname,xl_plan.comment_count,xl_plan.vote_count FROM xl_plan,xl_account WHERE xl_plan.id='{$plan_id}' AND xl_account.id=xl_plan.author_id");
             $arr=array();
 
             foreach($query->result_array() as $row)
@@ -310,8 +310,67 @@
 
         }
 
+        //获取分类下的方案
+        function get_cat_plan($cat_id)
+        {
+            $query=$this->db->query("SELECT id,title,imagepath,comment_count,vote_count FROM xl_plan WHERE category_id='{$cat_id}'");
 
+            $arr=array();
 
+            foreach($query->result_array() as $row)
+            {
+                array_push($arr,$row);
+            }
+
+            return $arr;
+        }
+
+        //获取最新方案
+        function get_newest_plan()
+        {
+            $query=$this->db->query("SELECT id,title,imagepath,publish_date,comment_count,vote_count FROM xl_plan ORDER BY publish_date DESC");
+            $arr=array();
+
+            foreach($query->result_array() as $row)
+            {
+                array_push($arr,$row);
+            }
+
+            return $arr;
+        }
+
+        
+        //评论方案
+        function comment_plan($arr)
+        {
+            return $this->db->insert('xl_plancomment',$arr);
+        }
+
+        //点赞方案
+        function vote_plan($arr)
+        {
+            return $this->db->insert('xl_planvote',$arr);
+        }
+
+        //评论数加一
+        function add_comment_count($plan_id)
+        {
+            $query=$this->db->query("UPDATE xl_plan SET comment_count = comment_count+1 WHERE id='{$plan_id}'");
+            if ($this->db->affected_rows() > 0) {
+                return TRUE;
+            }
+            return FALSE;
+        }
+
+        //点赞数加一
+        function add_vote_count($plan_id)
+        {
+            $query=$this->db->query("UPDATE xl_plan SET vote_count = vote_count+1 WHERE id='{$plan_id}'");
+            if ($this->db->affected_rows() > 0) {
+                return TRUE;
+            }
+            return FALSE;
+        }
 
 
 
