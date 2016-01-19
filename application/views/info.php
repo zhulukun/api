@@ -81,7 +81,7 @@
       </div>
     </div>
     <div class="labels">
-      <img src="http://localhost/api/images/label.png" style="width:20px;height:20px"/>
+      <img src="<?php echo base_url();?>/images/label.png" style="width:20px;height:20px"/>
       <?php foreach ($label as $item ):?>
       <span class="label-infos"><?php echo $item;?></span>
     <?php endforeach;?>
