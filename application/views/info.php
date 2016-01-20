@@ -6,7 +6,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>方案详情</title>
+    <title><?php echo $title;?></title>
 
     <!-- Bootstrap & Snippet plugin core CSS -->
     <link href="<?php echo base_url();?>css/bootstrap.min.css" rel="stylesheet">
