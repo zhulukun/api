@@ -41,7 +41,10 @@ class Upload extends CI_Controller {
         if ( ! $this->upload->do_upload('avatar'))
         {
             $error = array('error' => $this->upload->display_errors());
-            //$this->load->view('upload_form', $error);
+            print_r($error);
+            die();
+            // $this->load->view('upload_form', $error);
+
 
             $callback['status']='fail';
             $callback['response']=array(
